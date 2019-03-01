@@ -10,21 +10,19 @@ namespace WakeOnLanServer.Pages
 {
     public class IndexModel : PageModel
     {
-        public static Computer[] _computers = new Computer[]{
+        public static Computer[] COMPUTERS => new Computer[]{
                 new Computer {Name = "Ragnar", IP = "192.168.0.4", MAC = "FF:FF"},
                 new Computer {Name = "Joar", IP = "192.168.0.5", MAC = "FF:AE"}
             };
-        public Computer[] Computers { get; set; }
+        public  Dictionary<string, Computer> Computers { get; set; }
         public void OnGet()
         {
-            Computers = _computers;
+            Computers = COMPUTERS.ToDictionary(c=>c.Name);
         }
-        [BindProperty]
-        public int ComputerToWake { get; set; }
 
-        public void OnPost(){            
-            _computers[ComputerToWake].Woken = true;
-            Computers = _computers;
+        public void OnPost(string computerToWake){
+            Computers = COMPUTERS.ToDictionary(c=>c.Name);            
+            Computers[computerToWake].Woken = true;
         }
     }
 }

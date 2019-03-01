@@ -6,17 +6,15 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    @for (var i=0; i<Model.Computers.Length; i++)
+    <form method="post">
+    @foreach (var computer in Model.Computers.Values)
     {
-        var computer = Model.Computers[i];
         var wokenMessage = computer.Woken ? "Våken" : "Sover";
-        <form method="post">
             <div>
                 @computer.Name: @computer.IP @wokenMessage
-                <input asp-for="ComputerToWake" value="@i" hidden />
-                <input type="submit" value="Vekk opp"/>
-            </div>            
-        </form>
-    }
+                <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
+            </div> 
+    }               
+    </form>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
