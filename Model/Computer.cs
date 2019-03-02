@@ -41,6 +41,17 @@ namespace WakeOnLanServer.Model
                 for (int i = 0; i < 6; i++){
                     bytes[i] = Convert.ToByte(hexStrings[i], 16);
                 }
+                if(BitConverter.IsLittleEndian){
+                    var tempByte = bytes[0];
+                    bytes[0] = bytes[1];
+                    bytes[1] = tempByte;
+                    tempByte = bytes[2];
+                    bytes[2] = bytes[3];
+                    bytes[3] = tempByte;
+                    tempByte = bytes[4];
+                    bytes[4] = bytes[5];
+                    bytes[5] = tempByte;
+                }
                 return bytes;
             }
 
