@@ -11,8 +11,8 @@ namespace WakeOnLanServer.Pages
     public class IndexModel : PageModel
     {
         public static Computer[] COMPUTERS => new Computer[]{
-                new Computer {Name = "Ragnar", IP = "192.168.0.11", MAC = "FF:FF"},
-                new Computer {Name = "Joar", IP = "192.168.0.4", MAC = "FF:AE"}
+                new Computer {Name = "Ragnar", IP = "192.168.0.11", MAC = "3C:A9:F4:4E:32:8D"},
+                new Computer {Name = "Joar", IP = "192.168.0.4", MAC = "3C:A9:F4:4E:32:8C"}
             };
         public  Dictionary<string, Computer> Computers { get; set; }
         public async Task OnGetAsync()
@@ -28,6 +28,8 @@ namespace WakeOnLanServer.Pages
 
         public async Task OnPostAsync(string computerToWake){
             Computers = COMPUTERS.ToDictionary(c=>c.Name);            
+            //Use a discard since we don't need to await the wake up since it will not start up fast enough to reply to the next ping anyway
+            _ = Computers[computerToWake].WakeUp();            
             await PingAllComputers();
         }
     }
