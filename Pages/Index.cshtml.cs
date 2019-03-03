@@ -11,8 +11,8 @@ namespace WakeOnLanServer.Pages
     public class IndexModel : PageModel
     {
         public static Computer[] COMPUTERS => new Computer[]{
-                new Computer {Name = "Ragnar", IP = "192.168.0.11", MAC = "3C:A9:F4:4E:32:8D"},
-                new Computer {Name = "Joar", IP = "192.168.0.4", MAC = "3C:A9:F4:4E:32:8C"}
+                new Computer {Name = "Ragnar", IP = "192.168.0.11", MAC = "3C:A9:F4:4E:32:8C"},
+                new Computer {Name = "Joar", IP = "192.168.0.4", MAC = "3C:A9:F4:4E:32:8D"}
             };
         public  Dictionary<string, Computer> Computers { get; set; }
         public async Task OnGetAsync()
