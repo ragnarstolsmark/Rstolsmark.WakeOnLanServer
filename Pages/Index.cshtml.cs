@@ -4,14 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using WakeOnLanServer.Model;
+using System.IO;
 
 namespace WakeOnLanServer.Pages {
 	public class IndexModel : PageModel {
-		public static Computer[] COMPUTERS => new Computer[]{
-				new Computer {Name = "Ragnar", IP = "192.168.5.66", MAC = "18:31:BF:25:39:4A"},
-				new Computer {Name = "Joar", IP = "192.168.5.156", MAC = "40:B0:76:0E:86:6B"}
-			};
+		public static Computer[] COMPUTERS {
+			get{
+				if(!System.IO.File.Exists(@"computers.json")){
+					return new Computer[]{};
+				}
+				return JsonConvert.DeserializeObject<Computer[]>(System.IO.File.ReadAllText(@"computers.json"));
+			}
+		}
 		public Dictionary<string, Computer> Computers { get; set; }
 		public async Task OnGetAsync() {
 			Computers = COMPUTERS.ToDictionary(c => c.Name);

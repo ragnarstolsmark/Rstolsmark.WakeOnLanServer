@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@using System.Linq
 @{
     ViewData["Title"] = "Home page";
 }
@@ -10,11 +11,14 @@
     @foreach (var computer in Model.Computers.Values)
     {
         var wokenMessage = computer.Woken ? "Våken" : "Sover";
-            <div>
-                @computer.Name: @computer.IP @wokenMessage
-                <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
-            </div> 
+        <div>
+            @computer.Name: @computer.IP @wokenMessage
+            <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
+        </div> 
     }               
     </form>
+    @if(!Model.Computers.Any()){
+        <p>Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.</p>
+    }
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>

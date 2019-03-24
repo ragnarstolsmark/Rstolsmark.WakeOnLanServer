@@ -1,0 +1,14 @@
+﻿@page
+@model WakeOnLanServer.Pages.CreateModel
+@{
+    ViewData["Title"] = "Opprett datamaskin";
+}
+<h1>Opprett</h1>
+<form method="POST">
+    <label asp-for="Computer.Name">Navn</label>
+    <input asp-for="Computer.Name"/>
+    <label asp-for="Computer.IP">IP-adresse</label>
+    <input asp-for="Computer.IP"/>
+    <label asp-for="Computer.MAC">MAC-adresse</label>
+    <input asp-for="Computer.MAC"/>
+</form>
