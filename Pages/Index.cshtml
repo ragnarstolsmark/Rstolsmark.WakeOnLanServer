@@ -17,8 +17,8 @@
         </div> 
     }               
     </form>
-    @if(!Model.Computers.Any()){
-        <p>Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.</p>
-    }
+    <p if="!Model.Computers.Any()">
+        Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.
+    </p>    
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
