@@ -2,7 +2,7 @@
 @model IndexModel
 @using System.Linq
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Status";
 }
 
 <div class="text-center">
@@ -19,6 +19,5 @@
     </form>
     <p if="!Model.Computers.Any()">
         Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.
-    </p>    
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </p>
 </div>

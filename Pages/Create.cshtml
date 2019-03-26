@@ -5,10 +5,17 @@
 }
 <h1>Opprett</h1>
 <form method="POST">
-    <label asp-for="Computer.Name">Navn</label>
-    <input asp-for="Computer.Name"/>
-    <label asp-for="Computer.IP">IP-adresse</label>
-    <input asp-for="Computer.IP"/>
-    <label asp-for="Computer.MAC">MAC-adresse</label>
-    <input asp-for="Computer.MAC"/>
+    <div class="form-group">
+        <label asp-for="Computer.Name">Navn</label>
+        <input class="form-control" asp-for="Computer.Name"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Computer.IP">IP-adresse</label>
+        <input class="form-control" asp-for="Computer.IP"/>
+    </div>
+    <div class="form-group">
+        <label asp-for="Computer.MAC">MAC-adresse</label>
+        <input class="form-control" asp-for="Computer.MAC"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Legg til</button>
 </form>
