@@ -12,7 +12,7 @@
     {
         var wokenMessage = computer.Woken ? "Våken" : "Sover";
         <div>
-            @computer.Name: @computer.IP @wokenMessage
+            @computer.Name: IP: @computer.IP MAC: @computer.MAC @wokenMessage
             <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
         </div> 
     }               

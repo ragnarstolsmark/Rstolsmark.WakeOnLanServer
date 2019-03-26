@@ -5,12 +5,15 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace WakeOnLanServer.Model {
 	public class Computer {
 		public string Name { get; set; }
 		public string IP { get; set; }
 		public string MAC { get; set; }
+
+		[JsonIgnore]
 		public bool Woken { get; set; }
 
 		public async Task Ping() {
