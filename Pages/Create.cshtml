@@ -1,6 +1,11 @@
 ﻿@page
 @model WakeOnLanServer.Pages.CreateModel
-<h1>Opprett</h1>
+<h1>Legg til datamaskin</h1>
+<p>Du må først gjøre følgende på datamaskinen din:</p>
+<ul>
+    <li><a href="https://tunecomp.net/allow-incoming-ping-echo-request-without-disabling-windows-10-firewall/">Tillatte ping gjennom brannmuren</a></li>
+    <li><a href="https://www.groovypost.com/howto/enable-wake-on-lan-windows-10/">Aktivere Wake On Lan</a></li>
+</ul>
 <form id="create-form" method="POST">
     <label asp-for="Computer.Name">Navn</label>
     <input asp-for="Computer.Name"/>

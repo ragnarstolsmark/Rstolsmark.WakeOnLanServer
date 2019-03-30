@@ -5,6 +5,9 @@
   margin-top: 20px;
   background: #f2f2f2;
 }
+a, a:visited{
+  color: black;
+}
 
 input[type=submit]{
   cursor: pointer;
