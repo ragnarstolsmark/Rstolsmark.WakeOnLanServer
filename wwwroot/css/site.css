@@ -1,6 +1,7 @@
 ﻿body{
-  max-width: 500px;
-  margin-left: 10px;
+  width: 688px;
+  margin: auto;
+  margin-top: 20px;
   background: #f2f2f2;
 }
 
@@ -30,4 +31,7 @@ tbody tr:nth-child(odd){
   background: lightblue;
   border: 2px solid;
   padding: 20px;
+}
+h1{
+  text-align: center;
 }
