@@ -7,6 +7,7 @@
 
 input[type=submit]{
   cursor: pointer;
+  height: 30px;
 }
 
 table{
@@ -45,7 +46,6 @@ h1{
 }
 #create-form > input[type=submit]{
   width:100px;
-  height: 30px;
 }
 label{
   font-weight: 700;
