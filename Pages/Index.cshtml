@@ -1,18 +1,23 @@
 ﻿@page
 @model IndexModel
 @using System.Linq
-@{
-    ViewData["Title"] = "Status";
-}
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+<div>
+    <h1>Status</h1>
+    <div>
+        <span>Navn</span>
+        <span>IP</span>
+        <span>MAC</span>
+        <span>Status</span>
+    </div>
     <form method="post">
     @foreach (var computer in Model.Computers.Values)
     {
         var wokenMessage = computer.Woken ? "Våken" : "Sover";
         <div>
-            @computer.Name: IP: @computer.IP MAC: @computer.MAC @wokenMessage
+            <span>@computer.Name</span>
+            <span>@computer.IP</span>
+            <span>@computer.MAC</span>
+            <span>@wokenMessage</span>
             <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
         </div> 
     }               
