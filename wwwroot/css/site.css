@@ -1,6 +1,7 @@
 ﻿body{
-  width: 688px;
+  max-width: 708px;
   margin: auto;
+  padding-left:20px;
   margin-top: 20px;
   background: #f2f2f2;
 }
@@ -33,9 +34,6 @@ tbody tr:nth-child(odd){
   border: 2px solid;
   padding: 20px;
 }
-h1{
-  text-align: center;
-}
 /*Create page*/
 #create-form{
   display: grid;
@@ -43,6 +41,7 @@ h1{
 #create-form > input[type=text]{
   margin-bottom:10px;
   margin-top:5px;
+  width:200px;
 }
 #create-form > input[type=submit]{
   width:100px;

@@ -5,11 +5,11 @@
 <table>
     <thead>
         <tr>
-            <th>Navn</th>        
+            <th>Navn</th>
+            <th>Handling</th>
+            <th>Status</th>
             <th>IP</th>
             <th>MAC</th>
-            <th>Status</th>
-            <th>Handling</th>
         </tr>
     </thead>
     <tbody>
@@ -20,12 +20,12 @@
 
                 <tr>
                     <td>@computer.Name</td>
-                    <td>@computer.IP</td>
-                    <td>@computer.MAC</td>
-                    <td>@wokenMessage</td>
                     <td>
                         <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
                     </td>
+                    <td>@wokenMessage</td>
+                    <td>@computer.IP</td>
+                    <td>@computer.MAC</td>
                 </tr>
             }
         </form> 
