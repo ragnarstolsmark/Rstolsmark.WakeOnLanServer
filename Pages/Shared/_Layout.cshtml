@@ -8,12 +8,13 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a asp-page="/Index">Status</a>
-            <a asp-page="/Create">Legg til datamaskin</a>
-        </nav>
+        <a asp-page="/Index">Status</a>
+        <a asp-page="/Create">Legg til datamaskin</a>
     </header>
-    <main role="main" class="pb-3">
+    <main role="main">
+        <p class="alert" if='TempData.ContainsKey("Message")'>
+            @TempData["Message"]
+        </p>
         @RenderBody()
     </main>
 </body>
