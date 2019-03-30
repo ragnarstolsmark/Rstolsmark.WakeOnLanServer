@@ -2,7 +2,7 @@
 @model IndexModel
 @using System.Linq
 <h1>Status</h1>
-<table>
+<table if="Model.Computers.Any()">
     <thead>
         <tr>
             <th>Navn</th>
@@ -29,10 +29,8 @@
                 </tr>
             }
         </form> 
-    </tbody>        
-         
-        
-</div>
+    </tbody>
+</table>
 <p if="!Model.Computers.Any()">
     Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.
 </p>
