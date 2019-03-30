@@ -35,3 +35,18 @@ tbody tr:nth-child(odd){
 h1{
   text-align: center;
 }
+/*Create page*/
+#create-form{
+  display: grid;
+}
+#create-form > input[type=text]{
+  margin-bottom:10px;
+  margin-top:5px;
+}
+#create-form > input[type=submit]{
+  width:100px;
+  height: 30px;
+}
+label{
+  font-weight: 700;
+}

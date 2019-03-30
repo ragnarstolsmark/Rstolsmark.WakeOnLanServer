@@ -1,18 +1,14 @@
 ﻿@page
 @model WakeOnLanServer.Pages.CreateModel
 <h1>Opprett</h1>
-<form method="POST">
-    <div>
-        <label asp-for="Computer.Name">Navn</label>
-        <input asp-for="Computer.Name"/>
-    </div>
-    <div>
-        <label asp-for="Computer.IP">IP-adresse</label>
-        <input asp-for="Computer.IP"/>
-    </div>
-    <div>
-        <label asp-for="Computer.MAC">MAC-adresse</label>
-        <input asp-for="Computer.MAC"/>
-    </div>
+<form id="create-form" method="POST">
+    <label asp-for="Computer.Name">Navn</label>
+    <input asp-for="Computer.Name"/>
+
+    <label asp-for="Computer.IP">IP-adresse</label>
+    <input asp-for="Computer.IP"/>
+    
+    <label asp-for="Computer.MAC">MAC-adresse</label>
+    <input asp-for="Computer.MAC"/>
     <input type="submit" value="Legg til">
 </form>
