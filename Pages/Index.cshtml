@@ -2,35 +2,22 @@
 @model IndexModel
 @using System.Linq
 <h1>Status</h1>
-<table if="Model.Computers.Any()">
-    <thead>
-        <tr>
-            <th>Navn</th>
-            <th>Handling</th>
-            <th>Status</th>
-            <th>IP</th>
-            <th>MAC</th>
-        </tr>
-    </thead>
-    <tbody>
-        <form method="post">
-            @foreach (var computer in Model.Computers.Values)
-            {
-                var wokenMessage = computer.Woken ? "Våken" : "Sover";
 
-                <tr>
-                    <td>@computer.Name</td>
-                    <td>
-                        <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name"/>
-                    </td>
-                    <td>@wokenMessage</td>
-                    <td>@computer.IP</td>
-                    <td>@computer.MAC</td>
-                </tr>
-            }
-        </form> 
-    </tbody>
-</table>
+<form method="post" if="Model.Computers.Any()">
+    <div id="computers">
+        @foreach (var computer in Model.Computers.Values)
+        {
+            var wokenMessage = computer.Woken ? "Våken" : "Sover";
+            var awakeClass = computer.Woken ? "awake" : string.Empty;
+            <div class="computer">
+                <div class="computer-name @awakeClass">@computer.Name (@wokenMessage)</div>
+                <p>@computer.IP</p>
+                <p>@computer.MAC</p>
+                <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name" if="!computer.Woken" />
+            </div>
+        }
+    </div>
+</form> 
 <p if="!Model.Computers.Any()">
     Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.
 </p>

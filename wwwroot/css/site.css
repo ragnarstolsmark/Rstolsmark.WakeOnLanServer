@@ -2,6 +2,8 @@
   max-width: 708px;
   margin: auto;
   padding-left:20px;
+  padding-right:20px;
+  padding-bottom:20px;
   margin-top: 20px;
   background: #f2f2f2;
 }
@@ -14,22 +16,30 @@ input[type=submit]{
   height: 30px;
 }
 
-table{
-  border:2px solid black;
-  border-collapse: collapse;
+#computers{
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-auto-rows: auto;
+  grid-gap: 1rem;
 }
 
-th, td {
-  padding: 20px;  
+.computer{
   border:2px solid black;
+  padding-bottom: 10px;
 }
 
-th {
+.computer :not(:first-child){
+  margin-left: 10px;
+}
+
+.computer-name{
   background-color: lightcoral;
+  padding: 20px;  
+  border-bottom:2px solid black;
 }
 
-tbody tr:nth-child(odd){
-  background-color: lightgray;
+.computer-name.awake{
+  background-color: lightseagreen;
 }
 
 .alert{
