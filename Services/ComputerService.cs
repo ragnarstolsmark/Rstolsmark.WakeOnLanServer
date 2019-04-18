@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WakeOnLanServer.Model;
+using Rstolsmark.WakeOnLanServer.Model;
 using static System.IO.File;
-namespace WakeOnLanServer.Services {
+namespace Rstolsmark.WakeOnLanServer.Services {
     public static class ComputerService {
         public static Computer[] GetAllComputers(){
             if(!Exists("computers.json")){

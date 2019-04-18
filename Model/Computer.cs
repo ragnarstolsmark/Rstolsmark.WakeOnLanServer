@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace WakeOnLanServer.Model {
+namespace Rstolsmark.WakeOnLanServer.Model {
 	public class Computer {
 		public string Name { get; set; }
 		public string IP { get; set; }

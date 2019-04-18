@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-using WakeOnLanServer.Model;
+using Rstolsmark.WakeOnLanServer.Model;
 using System.IO;
-using static WakeOnLanServer.Services.ComputerService;
+using static Rstolsmark.WakeOnLanServer.Services.ComputerService;
 
-namespace WakeOnLanServer.Pages {
+namespace Rstolsmark.WakeOnLanServer.Pages {
 	public class IndexModel : PageModel {
 		public Dictionary<string, Computer> Computers { get; set; }
 		public async Task OnGetAsync() {

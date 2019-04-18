@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/WakeOnLanServer.csproj"
+                "${workspaceFolder}/Rstolsmark.WakeOnLanServer.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

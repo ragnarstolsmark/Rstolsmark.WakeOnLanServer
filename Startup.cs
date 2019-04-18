@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Rstolsmark.Owin.PasswordAuthentication;
 
-namespace WakeOnLanServer
+namespace Rstolsmark.WakeOnLanServer
 {
     public class Startup
     {

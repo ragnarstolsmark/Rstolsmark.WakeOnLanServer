@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace WakeOnLanServer.TagHelpers
+namespace Rstolsmark.WakeOnLanServer.TagHelpers
 {
     [HtmlTargetElement(Attributes = nameof(If))]
     public class IfTagHelper : TagHelper
