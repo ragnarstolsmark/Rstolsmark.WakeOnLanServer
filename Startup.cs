@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Owin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Rstolsmark.Owin.PasswordAuthentication;
 
 namespace WakeOnLanServer
 {
@@ -28,10 +31,11 @@ namespace WakeOnLanServer
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddSessionStateTempDataProvider();
             services.AddSession();
+            services.Configure<PasswordAuthenticationOptions>(Configuration.GetSection("PasswordAuthenticationOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsMonitor<PasswordAuthenticationOptions> passwordAuthenticationsOptionsAccessor)
         {
             if (env.IsDevelopment())
             {
@@ -45,6 +49,13 @@ namespace WakeOnLanServer
             }
 
             app.UseHttpsRedirection();
+            if (!string.IsNullOrEmpty(passwordAuthenticationsOptionsAccessor.CurrentValue.HashedPassword))
+            {
+                app.UseOwin(pipeline =>
+                {
+                    pipeline.UsePasswordAuthentication(passwordAuthenticationsOptionsAccessor.CurrentValue);
+                });
+            }
             app.UseStaticFiles();
             app.UseSession();
             app.UseMvc();
