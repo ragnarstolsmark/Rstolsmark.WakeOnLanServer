@@ -25,7 +25,7 @@ namespace Rstolsmark.WakeOnLanServer.Pages {
 			Computers = GetComputerDictionary();
 			//Use a discard since we don't need to await the wake up since it will not start up fast enough to reply to the next ping anyway
 			_ = Computers[computerToWake].WakeUp();
-			TempData["Message"] = $"Oppvåkningspakke sendt til datamaskinen {@computerToWake}. Det kan ta noe tid før den våkner siden den må skru seg på.";
+			TempData["Message"] = $"Magic packet sent to computer {@computerToWake}. It can take some time before it wakes up since it needs to boot first.";
 			return RedirectToPage("/Index");
 		}
 	}

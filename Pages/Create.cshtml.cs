@@ -18,7 +18,7 @@ namespace Rstolsmark.WakeOnLanServer.Pages
         }
         public IActionResult OnPost(){
             if(string.IsNullOrWhiteSpace(Computer.Name) || string.IsNullOrWhiteSpace(Computer.IP) || string.IsNullOrWhiteSpace(Computer.MAC)){
-                TempData["Message"] = "Du må fylle ut alle feltene";
+                TempData["Message"] = "You must fill out all fields.";
                 return Page();
             }
             AddOrUpdateComputer(Computer);

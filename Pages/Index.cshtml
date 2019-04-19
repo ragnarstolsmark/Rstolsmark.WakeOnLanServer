@@ -7,17 +7,17 @@
     <div id="computers">
         @foreach (var computer in Model.Computers.Values)
         {
-            var wokenMessage = computer.Woken ? "Våken" : "Sover";
+            var wokenMessage = computer.Woken ? "Awake" : "Sleeping";
             var awakeClass = computer.Woken ? "awake" : string.Empty;
             <div class="computer">
                 <div class="computer-name @awakeClass">@computer.Name (@wokenMessage)</div>
                 <p>@computer.IP</p>
                 <p>@computer.MAC</p>
-                <input type="submit" value="Vekk opp" asp-route-computerToWake="@computer.Name" if="!computer.Woken" />
+                <input type="submit" value="Wake up" asp-route-computerToWake="@computer.Name" if="!computer.Woken" />
             </div>
         }
     </div>
 </form> 
 <p if="!Model.Computers.Any()">
-    Ingen datamaskiner er lagt til. Legg til datamaskiner <a asp-page="/Create">her</a>.
+    No computers added. Add a computer <a asp-page="/Create">here</a>.
 </p>
