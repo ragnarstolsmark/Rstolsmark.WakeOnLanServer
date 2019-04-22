@@ -12,7 +12,18 @@ Download the zip file from the release tab.
 
 ### Hosting on IIS
 
-Unzip the contents into a website
+Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2.2 is installed.
+
+### Hosting on Kestrel
+
+1. Unzip the contents into a folder
+1. ```bash
+   dotnet run Rstolsmark.WakeOnLanServer.dll
+   ```
+1. To host on a different port specify urls:
+  ```bash
+  dotnet run Rstolsmark.WakeOnLanServer.dll --urls "http://*:8080;https://*:8081"
+  ```
 
 ### Adding a password
 1. Generate a salted hashed password using Rstolsmark.PasswordHashTool
