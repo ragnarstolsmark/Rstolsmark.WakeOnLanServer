@@ -18,11 +18,11 @@ Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2
 
 1. Unzip the contents into a folder
 1. ```bash
-   dotnet run Rstolsmark.WakeOnLanServer.dll
+   dotnet Rstolsmark.WakeOnLanServer.dll
    ```
 1. To host on a different port specify urls:
   ```bash
-  dotnet run Rstolsmark.WakeOnLanServer.dll --urls "http://*:8080;https://*:8081"
+  dotnet Rstolsmark.WakeOnLanServer.dll --urls "http://*:8080;https://*:8081"
   ```
 
 ### Adding a password
