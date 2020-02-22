@@ -22,7 +22,7 @@ ENTRYPOINT ["./Rstolsmark.WakeOnLanServer", "--urls", "http://*:80"]
 # -e ASPNETCORE_PasswordAuthenticationOptions__Realm="Wake me up" \
 # --name wakeonlanserver \
 # --mount source=wakeonlanserver,target=/data \
-# wakeonlanserver
+# rstolsmark/wakeonlanserver
 #
 # Backup (backup is stored as backup.tar in current directory)
 # docker run --rm --volumes-from wakeonlanserver -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /data
