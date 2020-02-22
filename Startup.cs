@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,8 @@ namespace Rstolsmark.WakeOnLanServer
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsMonitor<PasswordAuthenticationOptions> passwordAuthenticationsOptionsAccessor)
         {
+            string basedir = env.ContentRootPath;
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(basedir, "data"));
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
