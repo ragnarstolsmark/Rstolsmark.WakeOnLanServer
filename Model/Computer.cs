@@ -14,7 +14,7 @@ namespace Rstolsmark.WakeOnLanServer.Model
         public string Name { get; set; }
         public string IP { get; set; }
         public string MAC { get; set; }
-
+        public string SubnetMask { get; set; }
         [JsonIgnore]
         public bool Woken { get; set; }
 
@@ -26,13 +26,26 @@ namespace Rstolsmark.WakeOnLanServer.Model
             Woken = reply.Status == IPStatus.Success;
         }
 
+        [JsonIgnore]
+        public IPAddress BroadcastAddress
+        {
+            get
+            {
+                var address = IPAddress.Parse(IP);
+                var mask = IPAddress.Parse(SubnetMask);
+                uint ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+                uint ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
+                uint broadCastIpAddress = ipAddress | ~ipMaskV4;
+
+                return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
+            }
+        }
+
         public async Task WakeUp()
         {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             s.EnableBroadcast = true;
-            var lastDot = IP.LastIndexOf(".");
-            IPAddress broadcast = IPAddress.Parse(IP.Substring(0, lastDot + 1) + "255");
-            Console.WriteLine(broadcast);
+            IPAddress broadcast = BroadcastAddress;
             byte[] prefix = new byte[] { 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F };
             var pureMac = MacToByteArrayToSend(MAC);
             byte[] sendbuf = prefix;

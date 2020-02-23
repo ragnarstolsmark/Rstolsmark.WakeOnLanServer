@@ -13,6 +13,7 @@
                 <div class="computer-name @awakeClass">@computer.Name (@wokenMessage)</div>
                 <p>@computer.IP</p>
                 <p>@computer.MAC</p>
+                <p>@computer.SubnetMask</p>
                 <input type="submit" value="Wake up" asp-route-computerToWake="@computer.Name" if="!computer.Woken" />
             </div>
         }
