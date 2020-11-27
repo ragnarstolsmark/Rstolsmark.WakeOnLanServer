@@ -1,16 +1,10 @@
 using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Owin;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Rstolsmark.Owin.PasswordAuthentication;
 
@@ -28,15 +22,15 @@ namespace Rstolsmark.WakeOnLanServer
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            services
+                .AddRazorPages()
                 .AddSessionStateTempDataProvider();
             services.AddSession();
             services.Configure<PasswordAuthenticationOptions>(Configuration.GetSection("PasswordAuthenticationOptions"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IOptionsMonitor<PasswordAuthenticationOptions> passwordAuthenticationsOptionsAccessor)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IOptionsMonitor<PasswordAuthenticationOptions> passwordAuthenticationsOptionsAccessor)
         {
             string basedir = env.ContentRootPath;
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(basedir, "data"));
@@ -61,7 +55,12 @@ namespace Rstolsmark.WakeOnLanServer
             }
             app.UseStaticFiles();
             app.UseSession();
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+            });
         }
     }
 }

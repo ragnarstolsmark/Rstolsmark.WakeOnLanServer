@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Rstolsmark.WakeOnLanServer.Model;
 using static System.IO.File;
 using System;
 using System.IO;
+using System.Text.Json;
+
 namespace Rstolsmark.WakeOnLanServer.Services
 {
     public static class ComputerService
@@ -16,7 +17,7 @@ namespace Rstolsmark.WakeOnLanServer.Services
             {
                 return new Computer[] { };
             }
-            return JsonConvert.DeserializeObject<Computer[]>(ReadAllText(computersPath));
+            return JsonSerializer.Deserialize<Computer[]>(ReadAllText(computersPath));
         }
         public static Dictionary<string, Computer> GetComputerDictionary()
         {
@@ -43,7 +44,7 @@ namespace Rstolsmark.WakeOnLanServer.Services
                 newComputerList.Add(computer);
             }
             (new FileInfo(computersPath)).Directory.Create();
-            WriteAllText(computersPath, JsonConvert.SerializeObject(newComputerList, Formatting.Indented));
+            WriteAllText(computersPath, JsonSerializer.Serialize(newComputerList, new JsonSerializerOptions { WriteIndented = true }));
         }
     }
 }

@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR ./app
 COPY *.csproj ./
 RUN dotnet restore -r linux-musl-x64
@@ -14,7 +14,6 @@ RUN apk add libstdc++ libgcc libintl openssl && \
 VOLUME /data
 EXPOSE 80
 ENTRYPOINT ["./Rstolsmark.WakeOnLanServer", "--urls", "http://*:80"]
-# todo: , upgrade to 3.1
 # Run with:
 # docker run -d \
 # -p 80:80 \
