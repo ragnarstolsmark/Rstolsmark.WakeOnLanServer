@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR ./app
 COPY *.csproj ./
 RUN dotnet restore -r linux-musl-x64
@@ -7,7 +7,7 @@ RUN dotnet restore -r linux-musl-x64
 COPY / ./
 RUN dotnet publish -c Release -o out --self-contained -r linux-musl-x64 --no-restore
 
-FROM alpine:3.7 AS runtime
+FROM alpine:3.15 AS runtime
 COPY --from=build /app/out ./
 RUN apk add libstdc++ libgcc libintl openssl && \
     chmod +x Rstolsmark.WakeOnLanServer

@@ -1,9 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using Rstolsmark.WakeOnLanServer.Model;
 using static System.IO.File;
-using System;
-using System.IO;
 using System.Text.Json;
 
 namespace Rstolsmark.WakeOnLanServer.Services
