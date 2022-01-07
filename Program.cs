@@ -1,9 +1,24 @@
-﻿using Rstolsmark.Owin.PasswordAuthentication;
+﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web;
+using Rstolsmark.Owin.PasswordAuthentication;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddRazorPages()
     .AddSessionStateTempDataProvider();
+var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
+if(azureAdConfiguration.Exists()){
+    builder.Services
+        .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+            .AddMicrosoftIdentityWebApp(azureAdConfiguration);
+    builder.Services.AddAuthorization(options =>
+    {
+        options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+    });
+}
     
 builder.Services.AddSession();
 var app = builder.Build();
@@ -23,6 +38,12 @@ if (!string.IsNullOrEmpty(passwordAuthenticationOptions?.HashedPassword))
     {
         pipeline.UsePasswordAuthentication(passwordAuthenticationOptions);
     });
+}
+
+if (azureAdConfiguration.Exists())
+{
+    app.UseAuthentication();
+    app.UseAuthorization();
 }
 app.UseStaticFiles();
 app.UseSession();
