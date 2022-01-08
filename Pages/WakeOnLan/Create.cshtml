@@ -1,0 +1,22 @@
+﻿@page
+@model Rstolsmark.WakeOnLanServer.Pages.CreateModel
+<h1>Add computer</h1>
+<p>You must first do the following on your computer:</p>
+<ul>
+    <li><a href="https://tunecomp.net/allow-incoming-ping-echo-request-without-disabling-windows-10-firewall/">Allow ping through firewall</a></li>
+    <li><a href="https://www.groovypost.com/howto/enable-wake-on-lan-windows-10/">Activate Wake On Lan</a></li>
+</ul>
+<form id="create-form" method="POST">
+    <label asp-for="Computer.Name">Name</label>
+    <input asp-for="Computer.Name"/>
+
+    <label asp-for="Computer.IP">IP address</label>
+    <input asp-for="Computer.IP"/>
+    
+    <label asp-for="Computer.MAC">MAC address</label>
+    <input asp-for="Computer.MAC"/>
+
+    <label asp-for="Computer.SubnetMask">Subnet mask</label>
+    <input asp-for="Computer.SubnetMask"/>
+    <input type="submit" value="Add">
+</form>

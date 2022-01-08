@@ -4,8 +4,18 @@ using Microsoft.Identity.Web;
 using Rstolsmark.Owin.PasswordAuthentication;
 
 var builder = WebApplication.CreateBuilder(args);
+var wakeOnLanRole = builder.Configuration.GetValue<string>("WakeOnLanRole");
+var wakeOnLanAccessRequiresRole = !string.IsNullOrEmpty(wakeOnLanRole);
+const string requireWakeOnLanRolePolicy = "RequireWakeOnLanRole";
 builder.Services
-    .AddRazorPages()
+    .AddRazorPages(options =>
+    {
+        options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
+        if (wakeOnLanAccessRequiresRole)
+        {
+            options.Conventions.AuthorizeFolder("/WakeOnLan", requireWakeOnLanRolePolicy);
+        }
+    })
     .AddSessionStateTempDataProvider();
 var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
 if(azureAdConfiguration.Exists()){
@@ -14,6 +24,11 @@ if(azureAdConfiguration.Exists()){
             .AddMicrosoftIdentityWebApp(azureAdConfiguration);
     builder.Services.AddAuthorization(options =>
     {
+        if (wakeOnLanAccessRequiresRole)
+        {
+            options.AddPolicy(requireWakeOnLanRolePolicy,
+                policy => policy.RequireRole(wakeOnLanRole!));
+        }
         options.FallbackPolicy = new AuthorizationPolicyBuilder()
             .RequireAuthenticatedUser()
             .Build();
