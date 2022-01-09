@@ -7,8 +7,23 @@
   margin-top: 20px;
   background: #f2f2f2;
 }
+
 a, a:visited{
   color: black;
+}
+
+header > menu{
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+header > menu > li{
+  display: inline-block;
+}
+
+header > span{
+  vertical-align: top;
 }
 
 input[type=submit]{

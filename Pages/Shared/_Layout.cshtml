@@ -7,10 +7,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 </head>
 <body>
-    <header>
-        <a asp-page="/WakeOnLan/Index">Status</a>
-        <a asp-page="/WakeOnLan/Create">Add computer</a>
-    </header>
+<header>
+    <menu>
+        <li><b>WakeOnLan</b>
+            <ul>
+                <li><a asp-page="/WakeOnLan/Index">Status</a></li>
+                <li><a asp-page="/WakeOnLan/Create">Add computer</a></li>
+            </ul>
+        </li>
+    </menu>
+    @if (!string.IsNullOrEmpty(User?.Identity?.Name))
+    {
+        <span>@User?.Identity?.Name</span>
+    }
+</header>
     <main role="main">
         <p class="alert" if='TempData.ContainsKey("Message")'>
             @TempData["Message"]
