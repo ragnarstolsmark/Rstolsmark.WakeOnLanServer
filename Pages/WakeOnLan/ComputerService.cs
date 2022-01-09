@@ -1,8 +1,7 @@
-using Rstolsmark.WakeOnLanServer.Model;
-using static System.IO.File;
 using System.Text.Json;
+using static System.IO.File;
 
-namespace Rstolsmark.WakeOnLanServer.Services;
+namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
 public static class ComputerService
 {

@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Rstolsmark.WakeOnLanServer.Model;
-using static Rstolsmark.WakeOnLanServer.Services.ComputerService;
+using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.ComputerService;
 
-namespace Rstolsmark.WakeOnLanServer.Pages;
+namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
 public class CreateModel : PageModel
 {

@@ -3,7 +3,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using System.Text.Json.Serialization;
 
-namespace Rstolsmark.WakeOnLanServer.Model;
+namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
 public class Computer
 {
