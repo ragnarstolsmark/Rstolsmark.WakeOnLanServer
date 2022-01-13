@@ -1,13 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using Rstolsmark.Owin.PasswordAuthentication;
 
 var builder = WebApplication.CreateBuilder(args);
 var wakeOnLanRole = builder.Configuration.GetValue<string>("WakeOnLanRole");
 var wakeOnLanAccessRequiresRole = !string.IsNullOrEmpty(wakeOnLanRole);
 const string requireWakeOnLanRolePolicy = "RequireWakeOnLanRole";
-builder.Services
+var mvcBuilder = builder.Services
     .AddRazorPages(options =>
     {
         options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
@@ -18,7 +19,9 @@ builder.Services
     })
     .AddSessionStateTempDataProvider();
 var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
-if(azureAdConfiguration.Exists()){
+if(azureAdConfiguration.Exists())
+{
+    mvcBuilder.AddMicrosoftIdentityUI();
     builder.Services
         .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(azureAdConfiguration);
@@ -34,7 +37,7 @@ if(azureAdConfiguration.Exists()){
             .Build();
     });
 }
-    
+
 builder.Services.AddSession();
 var app = builder.Build();
 var basedir = app.Environment.ContentRootPath;
@@ -54,13 +57,14 @@ if (!string.IsNullOrEmpty(passwordAuthenticationOptions?.HashedPassword))
         pipeline.UsePasswordAuthentication(passwordAuthenticationOptions);
     });
 }
-
+//Serve the static files before authentication and authorization to allow anonymous access.
+app.UseStaticFiles();
 if (azureAdConfiguration.Exists())
 {
     app.UseAuthentication();
     app.UseAuthorization();
 }
-app.UseStaticFiles();
 app.UseSession();
 app.MapRazorPages();
+app.MapControllers();
 app.Run();

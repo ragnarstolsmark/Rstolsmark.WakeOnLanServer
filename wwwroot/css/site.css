@@ -20,9 +20,6 @@ header > menu{
 
 header > menu > li{
   display: inline-block;
-}
-
-header > span{
   vertical-align: top;
 }
 

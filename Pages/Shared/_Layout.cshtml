@@ -15,11 +15,15 @@
                 <li><a asp-page="/WakeOnLan/Create">Add computer</a></li>
             </ul>
         </li>
+        @if (!string.IsNullOrEmpty(User?.Identity?.Name))
+        {
+            <li><b>@User.Identity.Name</b>
+                <ul>
+                    <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></li>
+                </ul>
+            </li>
+        }
     </menu>
-    @if (!string.IsNullOrEmpty(User?.Identity?.Name))
-    {
-        <span>@User?.Identity?.Name</span>
-    }
 </header>
     <main role="main">
         <p class="alert" if='TempData.ContainsKey("Message")'>
