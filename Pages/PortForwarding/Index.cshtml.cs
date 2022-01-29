@@ -17,4 +17,28 @@ public class Index : PageModel
     {
         PortForwardings = await _portForwardingService.GetPortForwardingDictionary();
     }
+
+    public async Task<IActionResult> OnPostEnableAsync(string portForwardingId)
+    {
+        await _portForwardingService.Enable(portForwardingId);
+        return RedirectToPage("/PortForwarding/Index");
+    }
+    public async Task<IActionResult> OnPostDisableAsync(string portForwardingId)
+    {
+        await _portForwardingService.Disable(portForwardingId);
+        return RedirectToPage("/PortForwarding/Index");
+    }
+}
+
+public static class PortForwardingIndexExtensions
+{
+    public static string GetEnabledClass(this Model.PortForwarding portForwarding)
+    {
+        return portForwarding.Enabled ? "enabled" : string.Empty;
+    }
+
+    public static string GetEnabledMessage(this Model.PortForwarding portForwarding)
+    {
+        return portForwarding.Enabled ? "Enabled" : "Disabled";
+    }
 }

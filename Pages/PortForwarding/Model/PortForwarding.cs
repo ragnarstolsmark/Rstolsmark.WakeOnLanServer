@@ -11,4 +11,5 @@ public class PortForwarding
     public int? SourcePort { get; set; }
     public IPAddress DestinationIp { get; set; }
     public int DestinationPort { get; set; }
+    public bool Enabled { get; set; }
 }

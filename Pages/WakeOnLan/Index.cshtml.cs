@@ -28,3 +28,16 @@ public class IndexModel : PageModel
         return RedirectToPage("/WakeOnLan/Index");
     }
 }
+
+public static class WakeOnLanIndexExtensions
+{
+    public static string GetAwakeClass(this Computer computer)
+    {
+        return computer.Woken ? "enabled" : string.Empty;
+    }
+
+    public static string GetAwakeMessage(this Computer computer)
+    {
+        return computer.Woken ? "Awake" : "Sleeping";
+    }
+}

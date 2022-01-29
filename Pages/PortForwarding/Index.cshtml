@@ -5,7 +5,7 @@
         @foreach (var portForwarding in Model.PortForwardings.Values.OrderBy(p => p.Name))
         {
             <div class="main-grid-item">
-                <h4 class="main-grid-item-name enabled">@portForwarding.Name</h4>
+                <h4 class="main-grid-item-name @portForwarding.GetEnabledClass()">@portForwarding.Name (@portForwarding.GetEnabledMessage())</h4>
                 <div class="main-grid-item-content">
                     <div class="main-grid-item-properties">
                         <div class="main-grid-item-property-name">Protocol</div>
@@ -20,6 +20,14 @@
                         <div class="main-grid-item-property-value">@portForwarding.DestinationPort</div>
                     </div>
                     <div class="main-grid-item-actions">
+                        <form method="POST">
+                            <button if="@portForwarding.Enabled" asp-page-handler="Disable" asp-route-portForwardingId="@portForwarding.Id">
+                                Disable
+                            </button>
+                            <button if="!@portForwarding.Enabled" asp-page-handler="Enable" asp-route-portForwardingId="@portForwarding.Id">
+                                Enable
+                            </button>
+                        </form>
                         <a asp-page="/PortForwarding/Delete" asp-route-portForwardingId="@portForwarding.Id">Delete</a>
                     </div>
                 </div>

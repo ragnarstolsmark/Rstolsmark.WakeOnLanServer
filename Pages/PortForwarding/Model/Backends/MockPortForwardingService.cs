@@ -17,7 +17,8 @@ public class MockPortForwardingService : IPortForwardingService
             SourceIp = IPAddress.Parse("84.212.6.118"),
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.68"),
-            DestinationPort = 3389
+            DestinationPort = 3389,
+            Enabled = true
         });
         AddPortForwarding(new PortForwarding
         {
@@ -26,7 +27,8 @@ public class MockPortForwardingService : IPortForwardingService
             SourceIp = IPAddress.Parse("84.212.6.119"),
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.69"),
-            DestinationPort = 3389
+            DestinationPort = 3389,
+            Enabled = true
         });
         AddPortForwarding(new PortForwarding
         {
@@ -35,7 +37,8 @@ public class MockPortForwardingService : IPortForwardingService
             SourceIp = IPAddress.Parse("84.212.6.120"),
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.70"),
-            DestinationPort = 3389
+            DestinationPort = 3389,
+            Enabled = true
         });
         AddPortForwarding(new PortForwarding
         {
@@ -44,11 +47,10 @@ public class MockPortForwardingService : IPortForwardingService
             SourceIp = IPAddress.Parse("84.212.6.121"),
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.71"),
-            DestinationPort = 3389
+            DestinationPort = 3389,
+            Enabled = false
         });
     }
-    
-    
 
     private PortForwarding AddPortForwarding(PortForwarding portForwarding)
     {
@@ -83,6 +85,23 @@ public class MockPortForwardingService : IPortForwardingService
         if (_portForwardingConfigurations.ContainsKey(id))
         {
             _portForwardingConfigurations.Remove(id);
+        }
+        return Task.CompletedTask;
+    }
+
+    public Task Enable(string id)
+    {
+        if (_portForwardingConfigurations.ContainsKey(id))
+        {
+            _portForwardingConfigurations[id].Enabled = true;
+        }
+        return Task.CompletedTask;
+    }
+    public Task Disable(string id)
+    {
+        if (_portForwardingConfigurations.ContainsKey(id))
+        {
+            _portForwardingConfigurations[id].Enabled = false;
         }
         return Task.CompletedTask;
     }

@@ -6,4 +6,7 @@ public interface IPortForwardingService
     Task<PortForwarding> AddPortforwarding(PortForwarding portForwarding);
     Task<PortForwarding> GetById(string id);
     Task Delete(string id);
+    Task Enable(string id);
+    Task Disable(string id);
+
 }

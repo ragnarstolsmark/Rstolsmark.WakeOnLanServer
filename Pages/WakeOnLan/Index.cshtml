@@ -4,10 +4,8 @@
 <div class="main-grid" if="Model.Computers.Any()">
     @foreach (var computer in Model.Computers.Values)
     {
-        var wokenMessage = computer.Woken ? "Awake" : "Sleeping";
-        var awakeClass = computer.Woken ? "enabled" : string.Empty;
         <div class="main-grid-item">
-            <h4 class="main-grid-item-name @awakeClass">@computer.Name (@wokenMessage)</h4>
+            <h4 class="main-grid-item-name @computer.GetAwakeClass()">@computer.Name (@computer.GetAwakeMessage())</h4>
             <div class="main-grid-item-content">
                 <div class="main-grid-item-properties">
                     <div class="main-grid-item-property-name">IP</div>
