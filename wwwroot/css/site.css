@@ -68,6 +68,10 @@ button {
 
 .main-grid-item-actions{
   margin-top: 10px;
+  display: grid;
+  grid-template-columns: max-content;
+  grid-template-rows: auto;
+  grid-row-gap: .5em;
 }
 
 .alert{
