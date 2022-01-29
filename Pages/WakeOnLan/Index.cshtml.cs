@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.ComputerService;
+using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model.ComputerService;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
@@ -24,6 +25,6 @@ public class IndexModel : PageModel
         //Use a discard since we don't need to await the wake up since it will not start up fast enough to reply to the next ping anyway
         _ = Computers[computerToWake].WakeUp();
         TempData["Message"] = $"Magic packet sent to computer {@computerToWake}. It can take some time before it wakes up since it needs to boot first.";
-        return RedirectToPage("/Index");
+        return RedirectToPage("/WakeOnLan/Index");
     }
 }

@@ -3,21 +3,31 @@
 <h1>Wake on LAN status</h1>
 
 <form method="post" if="Model.Computers.Any()">
-    <div id="computers">
+    <div class="main-grid">
         @foreach (var computer in Model.Computers.Values)
         {
             var wokenMessage = computer.Woken ? "Awake" : "Sleeping";
-            var awakeClass = computer.Woken ? "awake" : string.Empty;
-            <div class="computer">
-                <div class="computer-name @awakeClass">@computer.Name (@wokenMessage)</div>
-                <p>@computer.IP</p>
-                <p>@computer.MAC</p>
-                <p>@computer.SubnetMask</p>
-                <input type="submit" value="Wake up" asp-route-computerToWake="@computer.Name" if="!computer.Woken" />
+            var awakeClass = computer.Woken ? "enabled" : string.Empty;
+            <div class="main-grid-item">
+                <h4 class="main-grid-item-name @awakeClass">@computer.Name (@wokenMessage)</h4>
+                <div class="main-grid-item-content">
+                    <div class="main-grid-item-properties">
+                        <div class="main-grid-item-property-name">IP</div>
+                        <div class="main-grid-item-property-value">@computer.IP</div>
+                        <div class="main-grid-item-property-name">MAC</div>
+                        <div class="main-grid-item-property-value">@computer.MAC</div>
+                        <div class="main-grid-item-property-name">Subnet mask</div>
+                        <div class="main-grid-item-property-value">@computer.SubnetMask</div>
+                    </div>
+                    <div class="main-grid-item-actions">
+                        <button asp-route-computerToWake="@computer.Name" if="!computer.Woken">Wake up</button>
+                        <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>
+                    </div>
+                </div>
             </div>
         }
     </div>
 </form> 
 <p if="!Model.Computers.Any()">
-    No computers added. Add a computer <a asp-page="/Create">here</a>.
+    No computers added. Add a computer <a asp-page="/WakeOnLan/Create">here</a>.
 </p>

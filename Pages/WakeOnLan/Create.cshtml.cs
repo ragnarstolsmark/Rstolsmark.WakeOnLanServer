@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.ComputerService;
+using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model.ComputerService;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
@@ -23,6 +24,6 @@ public class CreateModel : PageModel
             return Page();
         }
         AddOrUpdateComputer(Computer);
-        return RedirectToPage("/Index");
+        return RedirectToPage("/WakeOnLan/Index");
     }
 }

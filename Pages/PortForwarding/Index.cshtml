@@ -1,0 +1,31 @@
+@page
+@model Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Index
+<h1>Port forwarding status</h1>
+<div class="main-grid">
+        @foreach (var portForwarding in Model.PortForwardings.Values.OrderBy(p => p.Name))
+        {
+            <div class="main-grid-item">
+                <h4 class="main-grid-item-name enabled">@portForwarding.Name</h4>
+                <div class="main-grid-item-content">
+                    <div class="main-grid-item-properties">
+                        <div class="main-grid-item-property-name">Protocol</div>
+                        <div class="main-grid-item-property-value">@portForwarding.Protocol</div>
+                        <div class="main-grid-item-property-name">Source IP</div>
+                        <div class="main-grid-item-property-value">@portForwarding.SourceIp</div>
+                        <div class="main-grid-item-property-name">Source port</div>
+                        <div class="main-grid-item-property-value">@portForwarding.SourcePort</div>
+                        <div class="main-grid-item-property-name">Destination IP</div>
+                        <div class="main-grid-item-property-value">@portForwarding.DestinationIp</div>
+                        <div class="main-grid-item-property-name">Destination port</div>
+                        <div class="main-grid-item-property-value">@portForwarding.DestinationPort</div>
+                    </div>
+                    <div class="main-grid-item-actions">
+                        <a asp-page="/PortForwarding/Delete" asp-route-portForwardingId="@portForwarding.Id">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+<p if="!Model.PortForwardings.Any()">
+    No port forwardings added. Add a port forwarding <a asp-page="/PortForwarding/Create">here</a>.
+</p>

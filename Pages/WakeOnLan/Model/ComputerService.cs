@@ -1,7 +1,7 @@
 using System.Text.Json;
 using static System.IO.File;
 
-namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
+namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 
 public static class ComputerService
 {

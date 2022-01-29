@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model
+@inject PortForwardingSettings _portForwardingSettings
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -15,6 +17,15 @@
                 <li><a asp-page="/WakeOnLan/Create">Add computer</a></li>
             </ul>
         </li>
+        @if (_portForwardingSettings.Backend != PortForwardingBackend.None)
+        {
+            <li><b>Port forwarding</b>
+                <ul>
+                    <li><a asp-page="/PortForwarding/Index">Status</a></li>
+                    <li><a asp-page="/PortForwarding/Create">Add port forwarding</a></li>
+                </ul>
+            </li>
+        }
         @if (!string.IsNullOrEmpty(User?.Identity?.Name))
         {
             <li><b>@User.Identity.Name</b>

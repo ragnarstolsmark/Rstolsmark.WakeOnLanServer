@@ -23,35 +23,51 @@ header > menu > li{
   vertical-align: top;
 }
 
-input[type=submit]{
+button {
   cursor: pointer;
   height: 30px;
 }
 
-#computers{
+.main-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: max-content max-content;
   grid-auto-rows: auto;
   grid-gap: 1rem;
 }
 
-.computer{
+.main-grid-item {
   border:2px solid black;
   padding-bottom: 10px;
 }
 
-.computer :not(:first-child){
-  margin-left: 10px;
-}
-
-.computer-name{
+.main-grid-item-name{
   background-color: lightcoral;
-  padding: 20px;  
+  padding: 10px;  
   border-bottom:2px solid black;
+  margin: 0;
 }
 
-.computer-name.awake{
+.main-grid-item-name.enabled {
   background-color: lightseagreen;
+}
+
+.main-grid-item-properties {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  grid-template-rows: auto;
+  grid-row-gap: .5em;
+  grid-column-gap: 1em;
+}
+
+.main-grid-item-property-name {
+  font-weight: bold;
+}
+.main-grid-item-content{
+  margin: 10px;
+}
+
+.main-grid-item-actions{
+  margin-top: 10px;
 }
 
 .alert{
@@ -60,15 +76,12 @@ input[type=submit]{
   padding: 20px;
 }
 /*Create page*/
-#create-form{
+.create-form{
   display: grid;
+  width: 200px;
+  grid-row-gap: 10px;
 }
-#create-form > input[type=text]{
-  margin-bottom:10px;
-  margin-top:5px;
-  width:200px;
-}
-#create-form > input[type=submit]{
+.create-form > button{
   width:100px;
 }
 label{
