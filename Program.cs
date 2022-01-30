@@ -43,7 +43,6 @@ if (wakeOnLanAccessRequiresRole)
         folder: "/WakeOnLan")
     );
 }
-const string requireWakeOnLanRolePolicy = "RequireWakeOnLanRole";
 var mvcBuilder = builder.Services
     .AddRazorPages(options =>
     {
