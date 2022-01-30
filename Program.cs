@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.HttpOverrides;
-using Rstolsmark.WakeOnLanServer.Configuration;
+﻿using Rstolsmark.WakeOnLanServer.Configuration;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
 
@@ -62,15 +61,7 @@ builder.Services.AddSession();
 var app = builder.Build();
 var basedir = app.Environment.ContentRootPath;
 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(basedir, "data"));
-var useForwardedHeaders = app.Configuration.GetValue<bool>("UseForwardedHeaders");
-if (useForwardedHeaders)
-{
-    app.UseForwardedHeaders(new ForwardedHeadersOptions
-    {
-        ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-    });
-}
-
+app.ConfigureForwardedHeaders();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
