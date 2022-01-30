@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.HttpOverrides;
-using Rstolsmark.Owin.PasswordAuthentication;
 using Rstolsmark.WakeOnLanServer.Configuration;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
@@ -80,14 +79,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 app.UseHttpsRedirection();
-var passwordAuthenticationOptions = app.Configuration.GetSection("PasswordAuthenticationOptions").Get<PasswordAuthenticationOptions>();
-if (!string.IsNullOrEmpty(passwordAuthenticationOptions?.HashedPassword))
-{
-    app.UseOwin(pipeline =>
-    {
-        pipeline.UsePasswordAuthentication(passwordAuthenticationOptions);
-    });
-}
+app.ConfigurePasswordAuthentication();
 //Serve the static files before authentication and authorization to allow anonymous access.
 app.UseStaticFiles();
 if (azureAdConfiguration.Exists())
