@@ -1,37 +1,9 @@
 ﻿using Rstolsmark.WakeOnLanServer.Configuration;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
+using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding;
 
 var builder = WebApplication.CreateBuilder(args);
 var policyRoles = new List<PolicyRole>();
-var portForwardingConfiguration = builder.Configuration.GetSection("PortForwarding");
-PortForwardingSettings portForwardingSettings;
-if (portForwardingConfiguration.Exists())
-{
-    portForwardingSettings = portForwardingConfiguration.Get<PortForwardingSettings>();
-    switch (portForwardingSettings.Backend)
-    {
-        case PortForwardingBackend.Mock:
-            builder.Services.AddSingleton<IPortForwardingService, MockPortForwardingService>();
-            break;
-    }
-} else
-{
-    portForwardingSettings = new PortForwardingSettings
-    {
-        Backend = PortForwardingBackend.None
-    };
-}
-var portForwardingAccessRequiresRole = !string.IsNullOrEmpty(portForwardingSettings.PortForwardingRole);
-if (portForwardingAccessRequiresRole)
-{
-    policyRoles.Add(new PolicyRole(
-        policy: "RequirePortForwardingRole",
-        role: portForwardingSettings.PortForwardingRole,
-        folder: "/PortForwarding")
-    );
-}
-builder.Services.AddSingleton(portForwardingSettings);
+builder.ConfigurePortForwarding(policyRoles);
 var wakeOnLanRole = builder.Configuration.GetValue<string>("WakeOnLanRole");
 var wakeOnLanAccessRequiresRole = !string.IsNullOrEmpty(wakeOnLanRole);
 if (wakeOnLanAccessRequiresRole)
