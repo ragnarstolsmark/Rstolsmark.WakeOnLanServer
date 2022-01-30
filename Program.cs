@@ -5,16 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 var policyRoles = new List<PolicyRole>();
 builder.ConfigurePortForwarding(policyRoles);
 builder.ConfigureWakeOnLan(policyRoles);
-var mvcBuilder = builder.Services
-    .AddRazorPages(options =>
-    {
-        options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
-        foreach (var policyRole in policyRoles)
-        {
-            options.Conventions.AuthorizeFolder(policyRole.Folder, policyRole.Policy);
-        }
-    })
-    .AddSessionStateTempDataProvider();
+
+var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
 var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
 if(azureAdConfiguration.Exists())
 {
