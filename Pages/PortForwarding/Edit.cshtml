@@ -1,7 +1,7 @@
 @page
-@model CreatePortForwardingModel
-<h1>Add Port forwarding</h1>
+@model EditPortForwardingModel
+<h1>Edit @Model.Form.Name</h1>
 <form method="POST" class="main-form">
     <partial name="_PortForwardingForm" model="@Model.Form"/>
-    <button>Add</button>
+    <button>Save</button>
 </form>

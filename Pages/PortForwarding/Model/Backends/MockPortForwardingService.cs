@@ -10,17 +10,16 @@ public class MockPortForwardingService : IPortForwardingService
     {
         _portForwardingConfigurations = new Dictionary<string, PortForwarding>();
         _currentId = 1;
-        AddPortForwarding(new PortForwarding
+        AddPortForwarding(new PortForwardingData
         {
             Name = "Ragnar hjemmekontor",
             Protocol = Protocol.TCP,
             SourceIp = IPAddress.Parse("84.212.6.118"),
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.68"),
-            DestinationPort = 3389,
-            Enabled = true
+            DestinationPort = 3389
         });
-        AddPortForwarding(new PortForwarding
+        AddPortForwarding(new PortForwardingData
         {
             Name = "Knut hjemmekontor",
             Protocol = Protocol.TCP,
@@ -28,9 +27,8 @@ public class MockPortForwardingService : IPortForwardingService
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.69"),
             DestinationPort = 3389,
-            Enabled = true
         });
-        AddPortForwarding(new PortForwarding
+        AddPortForwarding(new PortForwardingData
         {
             Name = "Hans hjemmekontor",
             Protocol = Protocol.TCP,
@@ -38,9 +36,8 @@ public class MockPortForwardingService : IPortForwardingService
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.70"),
             DestinationPort = 3389,
-            Enabled = true
         });
-        AddPortForwarding(new PortForwarding
+        var andersHomeOffice = AddPortForwarding(new PortForwardingData
         {
             Name = "Anders hjemmekontor",
             Protocol = Protocol.TCP,
@@ -48,13 +45,13 @@ public class MockPortForwardingService : IPortForwardingService
             SourcePort = 3389,
             DestinationIp = IPAddress.Parse("192.168.5.71"),
             DestinationPort = 3389,
-            Enabled = false
         });
+        Disable(andersHomeOffice.Id);
     }
 
-    private PortForwarding AddPortForwarding(PortForwarding portForwarding)
+    private PortForwarding AddPortForwarding(PortForwardingData portForwardingData)
     {
-        portForwarding.Id = _currentId.ToString();
+        var portForwarding = new PortForwarding(_currentId.ToString(), portForwardingData);
         _portForwardingConfigurations[portForwarding.Id] = portForwarding;
         _currentId++;
         return portForwarding;
@@ -65,9 +62,25 @@ public class MockPortForwardingService : IPortForwardingService
         return Task.FromResult(_portForwardingConfigurations.Values.AsEnumerable());
     }
 
-    Task<PortForwarding> IPortForwardingService.AddPortforwarding(PortForwarding portForwarding)
+    public Task EditPortForwarding(string id, PortForwardingData portForwardingData)
     {
-        return Task.FromResult(AddPortForwarding(portForwarding));
+        if (_portForwardingConfigurations.ContainsKey(id))
+        {
+            var editedPortForwarding = _portForwardingConfigurations[id];
+            editedPortForwarding.Name = portForwardingData.Name;
+            editedPortForwarding.Protocol = portForwardingData.Protocol;
+            editedPortForwarding.SourceIp = portForwardingData.SourceIp;
+            editedPortForwarding.SourcePort = portForwardingData.SourcePort;
+            editedPortForwarding.DestinationIp = portForwardingData.DestinationIp;
+            editedPortForwarding.DestinationPort = portForwardingData.DestinationPort;
+        }
+        return Task.CompletedTask;
+    }
+
+    Task IPortForwardingService.AddPortForwarding(PortForwardingData portForwardingData)
+    {
+        AddPortForwarding(portForwardingData);
+        return Task.CompletedTask;
     }
 
     public Task<PortForwarding> GetById(string id)

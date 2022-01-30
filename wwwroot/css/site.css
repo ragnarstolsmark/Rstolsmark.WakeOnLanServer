@@ -79,13 +79,13 @@ button {
   border: 2px solid;
   padding: 20px;
 }
-/*Create page*/
-.create-form{
+/*Create / Edit pages*/
+.main-form{
   display: grid;
   width: 200px;
   grid-row-gap: 10px;
 }
-.create-form > button{
+.main-form > button{
   width:100px;
 }
 label{

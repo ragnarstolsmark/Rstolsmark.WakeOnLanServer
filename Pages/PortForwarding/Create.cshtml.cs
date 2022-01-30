@@ -13,32 +13,20 @@ public class CreatePortForwardingModel : PageModel
     {
         _portForwardingService = portForwardingService;
     }
+
     [BindProperty]
-    public string Name { get; set; }
-    [BindProperty]
-    public Protocol Protocol { get; set; }
-    [BindProperty]
-    public string SourceIp { get; set; }
-    [BindProperty]
-    public int? SourcePort { get; set; }
-    [BindProperty(SupportsGet = true)]
-    public string DestinationIp { get; set; }
-    [BindProperty]
-    public int DestinationPort { get; set; }
-    public void OnGet()
+    public PortForwardingForm Form { get; set; }
+    public void OnGet(string destinationIp)
     {
-        SourceIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString();
+        Form = new PortForwardingForm
+        {
+            SourceIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
+            DestinationIp = destinationIp
+        };
     }
     public async Task<IActionResult> OnPostAsync()
     {
-        var _ = await _portForwardingService.AddPortforwarding(new Model.PortForwarding
-        {
-            Name = Name,
-            SourceIp = !string.IsNullOrWhiteSpace(SourceIp) ? IPAddress.Parse(SourceIp) : null,
-            SourcePort = SourcePort,
-            DestinationIp = IPAddress.Parse(DestinationIp),
-            DestinationPort = DestinationPort
-        });
+        await _portForwardingService.AddPortForwarding(new PortForwardingData(Form));
         return RedirectToPage("/PortForwarding/Index");
     }
 }
