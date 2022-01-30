@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 var policyRoles = new List<PolicyRole>();
 builder.ConfigurePortForwarding(policyRoles);
 builder.ConfigureWakeOnLan(policyRoles);
-
 var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
 var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
 if(azureAdConfiguration.Exists())
