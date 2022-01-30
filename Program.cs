@@ -110,6 +110,7 @@ if (azureAdConfiguration.Exists())
     app.UseAuthorization();
 }
 app.UseSession();
+app.UseStatusCodePagesWithReExecute("/Errors/{0}");
 app.MapRazorPages();
 app.MapControllers();
 app.Run();
