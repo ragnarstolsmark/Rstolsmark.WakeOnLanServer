@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
+﻿using Microsoft.AspNetCore.HttpOverrides;
 using Rstolsmark.Owin.PasswordAuthentication;
+using Rstolsmark.WakeOnLanServer.Configuration;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
 
 var builder = WebApplication.CreateBuilder(args);
+var policyRoles = new List<PolicyRole>();
 var portForwardingConfiguration = builder.Configuration.GetSection("PortForwarding");
 PortForwardingSettings portForwardingSettings;
 if (portForwardingConfiguration.Exists())
@@ -26,54 +24,42 @@ if (portForwardingConfiguration.Exists())
         Backend = PortForwardingBackend.None
     };
 }
-
 var portForwardingAccessRequiresRole = !string.IsNullOrEmpty(portForwardingSettings.PortForwardingRole);
-const string requirePortForwardingRolePolicy = "RequirePortForwardingRole";
+if (portForwardingAccessRequiresRole)
+{
+    policyRoles.Add(new PolicyRole(
+        policy: "RequirePortForwardingRole",
+        role: portForwardingSettings.PortForwardingRole,
+        folder: "/PortForwarding")
+    );
+}
 builder.Services.AddSingleton(portForwardingSettings);
 var wakeOnLanRole = builder.Configuration.GetValue<string>("WakeOnLanRole");
 var wakeOnLanAccessRequiresRole = !string.IsNullOrEmpty(wakeOnLanRole);
+if (wakeOnLanAccessRequiresRole)
+{
+    policyRoles.Add( new PolicyRole(
+        policy: "RequireWakeOnLanRole",
+        role: wakeOnLanRole,
+        folder: "/WakeOnLan")
+    );
+}
 const string requireWakeOnLanRolePolicy = "RequireWakeOnLanRole";
 var mvcBuilder = builder.Services
     .AddRazorPages(options =>
     {
         options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
-        if (wakeOnLanAccessRequiresRole)
+        foreach (var policyRole in policyRoles)
         {
-            options.Conventions.AuthorizeFolder("/WakeOnLan", requireWakeOnLanRolePolicy);
-        }
-
-        if (portForwardingAccessRequiresRole)
-        {
-            options.Conventions.AuthorizeFolder("/PortForwarding", requirePortForwardingRolePolicy);
+            options.Conventions.AuthorizeFolder(policyRole.Folder, policyRole.Policy);
         }
     })
     .AddSessionStateTempDataProvider();
 var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
 if(azureAdConfiguration.Exists())
 {
-    mvcBuilder.AddMicrosoftIdentityUI();
-    builder.Services
-        .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-            .AddMicrosoftIdentityWebApp(azureAdConfiguration);
-    builder.Services.AddAuthorization(options =>
-    {
-        if (wakeOnLanAccessRequiresRole)
-        {
-            options.AddPolicy(requireWakeOnLanRolePolicy,
-                policy => policy.RequireRole(wakeOnLanRole!));
-        }
-
-        if (portForwardingAccessRequiresRole)
-        {
-            options.AddPolicy(requirePortForwardingRolePolicy,
-                policy => policy.RequireRole(portForwardingSettings.PortForwardingRole));
-        }
-        options.FallbackPolicy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            .Build();
-    });
+    builder.AddAzureAdAuthentication(mvcBuilder, azureAdConfiguration, policyRoles);
 }
-
 builder.Services.AddSession();
 var app = builder.Build();
 var basedir = app.Environment.ContentRootPath;
