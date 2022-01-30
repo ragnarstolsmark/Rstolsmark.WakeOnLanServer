@@ -4,16 +4,7 @@ using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding;
 var builder = WebApplication.CreateBuilder(args);
 var policyRoles = new List<PolicyRole>();
 builder.ConfigurePortForwarding(policyRoles);
-var wakeOnLanRole = builder.Configuration.GetValue<string>("WakeOnLanRole");
-var wakeOnLanAccessRequiresRole = !string.IsNullOrEmpty(wakeOnLanRole);
-if (wakeOnLanAccessRequiresRole)
-{
-    policyRoles.Add( new PolicyRole(
-        policy: "RequireWakeOnLanRole",
-        role: wakeOnLanRole,
-        folder: "/WakeOnLan")
-    );
-}
+builder.ConfigureWakeOnLan(policyRoles);
 var mvcBuilder = builder.Services
     .AddRazorPages(options =>
     {
