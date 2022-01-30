@@ -5,7 +5,7 @@ using Microsoft.Identity.Web.UI;
 
 namespace Rstolsmark.WakeOnLanServer.Configuration;
 
-public static class AzureAdConfigurationExtensions
+public static class AzureAdConfiguration
 {
     public static void AddAzureAdAuthentication(this WebApplicationBuilder builder, IMvcBuilder mvcBuilder,
         IConfigurationSection azureAdConfiguration, IEnumerable<PolicyRole> policyRoles)
