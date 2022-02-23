@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Caching.Memory;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
 
@@ -17,6 +18,16 @@ public static class PortForwardingConfiguration
             {
                 case PortForwardingBackend.Mock:
                     builder.Services.AddSingleton<IPortForwardingService, MockPortForwardingService>();
+                    break;
+                case PortForwardingBackend.Unifi:
+                    if (string.IsNullOrEmpty(portForwardingSettings.UnifiClientOptions?.DefaultInterface))
+                    {
+                        throw new Exception("Unifi client needs a 'DefaultInterface' configured, to allow creation of port forwarding rules.");
+                    }
+                    var unifiCache = new MemoryCache(new MemoryCacheOptions());
+                    var unifiClient = new UnifiClient.UnifiClient(unifiCache, portForwardingSettings.UnifiClientOptions);
+                    var unifiPortForwardingService = new UnifiPortForwardingService(unifiClient);
+                    builder.Services.AddSingleton<IPortForwardingService>(unifiPortForwardingService);
                     break;
             }
         } else

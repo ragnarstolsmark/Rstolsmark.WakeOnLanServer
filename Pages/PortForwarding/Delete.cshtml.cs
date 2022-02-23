@@ -4,6 +4,7 @@ using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
+[TypeFilter(typeof(BackendDownExceptionFilter))]
 public class DeletePortForwarding : PageModel
 {
     private readonly IPortForwardingService _portForwardingService;
@@ -29,6 +30,11 @@ public class DeletePortForwarding : PageModel
 
     public async Task<ActionResult> OnPostAsync()
     {
+        var portForwarding = await _portForwardingService.GetById(PortForwardingId);
+        if (portForwarding == null)
+        {
+            return NotFound();
+        }
         await _portForwardingService.Delete(PortForwardingId);
         return RedirectToPage("/PortForwarding/Index");
     }

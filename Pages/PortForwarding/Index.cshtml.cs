@@ -4,6 +4,7 @@ using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
+[TypeFilter(typeof(BackendDownExceptionFilter))]
 public class Index : PageModel
 {
     private readonly IPortForwardingService _portForwardingService;

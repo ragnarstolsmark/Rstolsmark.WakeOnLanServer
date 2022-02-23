@@ -18,7 +18,7 @@ public class PortForwardingForm
     public string Name { get; set; }
     public Protocol Protocol { get; set; }
     public string SourceIp { get; set; }
-    public int? SourcePort { get; set; }
+    public int SourcePort { get; set; }
     public string DestinationIp { get; set; }
     public int DestinationPort { get; set; }
 }

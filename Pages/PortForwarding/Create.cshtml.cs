@@ -5,6 +5,7 @@ using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
+[TypeFilter(typeof(BackendDownExceptionFilter))]
 public class CreatePortForwardingModel : PageModel
 {
     private readonly IPortForwardingService _portForwardingService;
@@ -24,6 +25,7 @@ public class CreatePortForwardingModel : PageModel
             DestinationIp = destinationIp
         };
     }
+    
     public async Task<IActionResult> OnPostAsync()
     {
         await _portForwardingService.AddPortForwarding(new PortForwardingData(Form));
