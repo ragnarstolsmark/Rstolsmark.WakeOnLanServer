@@ -5,3 +5,4 @@ out/
 .idea/
 .vs/
 *.DotSettings.user
+logs/
