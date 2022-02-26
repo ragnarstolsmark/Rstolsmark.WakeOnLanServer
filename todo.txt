@@ -1,0 +1,4 @@
+todo add azure key vault before configuring logger
+todo edit of computers 
+todo fluent validation of computers and port forwardings
+todo add wireguard support
