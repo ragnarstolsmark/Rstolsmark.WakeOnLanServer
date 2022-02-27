@@ -7,6 +7,7 @@ Log.Information("Starting up");
 try
 {
     var builder = WebApplication.CreateBuilder(args);
+    builder.ConfigureAzureKeyVault();
     builder.ConfigureLogger();
     var policyRoles = new List<PolicyRole>();
     builder.ConfigurePortForwarding(policyRoles);
