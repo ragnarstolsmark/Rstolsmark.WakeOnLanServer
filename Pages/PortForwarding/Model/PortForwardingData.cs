@@ -14,6 +14,7 @@ public class PortForwardingData
         SourcePort = form.SourcePort;
         DestinationIp = IPAddress.Parse(form.DestinationIp);
         DestinationPort = form.DestinationPort;
+        Protocol = form.Protocol;
     }
     public string Name { get; set; }
     public Protocol Protocol { get; set; }
