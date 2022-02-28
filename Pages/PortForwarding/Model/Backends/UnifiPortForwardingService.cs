@@ -55,7 +55,7 @@ public class UnifiPortForwardingService : IPortForwardingService
         {
             return false;
         }
-        if (!(Enum.TryParse(unifiPortForward.Protocol, out Protocol protocol) && Enum.IsDefined(protocol)))
+        if (unifiPortForward.Protocol != "tcp_udp" && !(Enum.TryParse(unifiPortForward.Protocol?.ToUpper(), out Protocol protocol) && Enum.IsDefined(protocol)))
         {
             return false;
         }
@@ -69,7 +69,7 @@ public class UnifiPortForwardingService : IPortForwardingService
             Id = unifiPortForward.Id,
             Name = unifiPortForward.Name,
             Enabled = unifiPortForward.Enabled,
-            Protocol = Enum.Parse<Protocol>(unifiPortForward.Protocol),
+            Protocol = unifiPortForward.Protocol == "tcp_udp" ? Protocol.Any : Enum.Parse<Protocol>(unifiPortForward.Protocol.ToUpper()),
             SourceIp = string.IsNullOrEmpty(unifiPortForward.Source) || unifiPortForward.Source == "any" ? null : IPAddress.Parse(unifiPortForward.Source),
             SourcePort = int.Parse(unifiPortForward.ForwardPort),
             DestinationIp = IPAddress.Parse(unifiPortForward.Forward),
@@ -82,7 +82,7 @@ public class UnifiPortForwardingService : IPortForwardingService
         return new UnifiPortForwardingData
         {
             Name = portForwardingData.Name,
-            Protocol = portForwardingData.Protocol.ToString(),
+            Protocol = portForwardingData.Protocol == Protocol.Any ? "tcp_udp" : portForwardingData.Protocol.ToString().ToLower(),
             Source = portForwardingData.SourceIp?.ToString() ?? "any",
             ForwardPort = portForwardingData.SourcePort.ToString(),
             Forward = portForwardingData.DestinationIp.ToString(),
