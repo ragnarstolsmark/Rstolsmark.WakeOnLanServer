@@ -23,7 +23,7 @@ public class UnifiPortForwardingService : IPortForwardingService
     // We only support port forwarding without ranges for source or destination
     private static bool IsStandardPortForwarding(UnifiPortForwarding unifiPortForward)
     {
-        if (!string.IsNullOrEmpty(unifiPortForward.Source) && !IPAddress.TryParse(unifiPortForward.Source, out _))
+        if (!string.IsNullOrEmpty(unifiPortForward.Source) && unifiPortForward.Source != "any" && !IPAddress.TryParse(unifiPortForward.Source, out _))
         {
             return false;
         }
@@ -70,7 +70,7 @@ public class UnifiPortForwardingService : IPortForwardingService
             Name = unifiPortForward.Name,
             Enabled = unifiPortForward.Enabled,
             Protocol = Enum.Parse<Protocol>(unifiPortForward.Protocol),
-            SourceIp = string.IsNullOrEmpty(unifiPortForward.Source) ? null : IPAddress.Parse(unifiPortForward.Source),
+            SourceIp = string.IsNullOrEmpty(unifiPortForward.Source) || unifiPortForward.Source == "any" ? null : IPAddress.Parse(unifiPortForward.Source),
             SourcePort = int.Parse(unifiPortForward.ForwardPort),
             DestinationIp = IPAddress.Parse(unifiPortForward.Forward),
             DestinationPort = int.Parse(unifiPortForward.DestinationPort)
@@ -83,7 +83,7 @@ public class UnifiPortForwardingService : IPortForwardingService
         {
             Name = portForwardingData.Name,
             Protocol = portForwardingData.Protocol.ToString(),
-            Source = portForwardingData.SourceIp?.ToString(),
+            Source = portForwardingData.SourceIp?.ToString() ?? "any",
             ForwardPort = portForwardingData.SourcePort.ToString(),
             Forward = portForwardingData.DestinationIp.ToString(),
             DestinationPort = portForwardingData.DestinationPort.ToString()
