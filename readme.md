@@ -1,10 +1,10 @@
 # Rstolsmark.WakeOnLanServer
 
-Asp.Net Core Http server to enable wake on lan for computers behind a firewall.
+Asp.Net Http server to enable wake on lan for computers behind a firewall. It also allows for port forwarding configuration.
 
 ## Requirements
 
- - .NET core 2.2 runtime
+ - .NET 6 runtime
 
 ## Usage
 
@@ -12,7 +12,7 @@ Download the zip file from the release tab.
 
 ### Hosting on IIS
 
-Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2.2 is installed.
+Unzip the contents into a website. Ensure that the dotnet hosting runtime 6 is installed.
 
 ### Hosting on Kestrel
 
@@ -25,7 +25,67 @@ Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2
   dotnet Rstolsmark.WakeOnLanServer.dll --urls "http://*:8080;https://*:8081"
   ```
 
+## Configuration
+
+### Adding a configuration file for production
+
+1. Add `appsettings.Production.json` to the root of the site
+
+### Azure AD authentication
+
+The WakeOnLan server supports authentication using Azure AD. Follow this guide for setup:
+1. Create an app registration in Azure.
+2. Add a redirect URI of type web to the app registration. Set the following URI: `https://appurl.com/signin-oidc`.
+3. Add a front-channel logout URL in this format: `https://appurl.com/signout-oidc`.
+4. Add the following to `appsetings.Production.json`:
+```json
+{
+   "AzureAD": {
+      "Instance": "https://login.microsoftonline.com/",
+      "Domain": "your organization domain in azure",
+      "ClientId": "The client id of your app registration",
+      "TenantId": "Your Azure tenant id"
+   }
+}
+```
+Now only users which are allowed to log on to your app in Azure will be allowed to access the application.
+To configure which users this are you need to find the application in the Enterprise Applications section of the Azure portal. 
+Here you can set if users must be assigned to be allowed to sign in. (Assignment required?)
+You can also add users to roles for use with authorization.
+
+### Azure AD authorization
+
+It is possible to configure authorization with Azure AD. 
+You can then limit a user's access to the WakeOnLanServer to either the WakeOnLan section or the port forwarding section.
+
+#### Azure portal configuration of roles
+
+Add the roles you want to define for authorization in the App roles tab of your app registration. 
+In the example configuration we have used the roles with display names: `Port forwarder` and `Wake on lan server`.
+They will have the values `portforwarder` and `wakeonlanserver` respectively.
+It is the values we will use when configuring role authorization in the application.
+
+#### WakeOnLan authorization
+
+Add the following to `appsettings.Production.json`:
+```json
+{
+   "WakeOnLanRole": "wakeonlanserver"
+}
+```
+#### Port forwarding authorization
+
+Add the following to `appsettings.Production.json`:
+```json
+{
+   "PortForwarding": {
+      "PortForwardingRole": "portforwarder"
+   }
+}
+```
+
 ### Adding a password
+
 1. Generate a salted hashed password using Rstolsmark.PasswordHashTool
     1. ```bash
        dotnet tool install -g Rstolsmark.PasswordHashTool
@@ -33,8 +93,7 @@ Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2
     1. ```bash
        passwordhasher yourpassword
        ```
-1. Add appsettings.Production.json to the root of the site
-1. Add the content
+1. Add the following content to `appsettings.Production.json`:
 ```json
 {
   "PasswordAuthenticationOptions":{
@@ -43,7 +102,187 @@ Unzip the contents into a website. Ensure that the dotnet core hosting runtime 2
   }
 }
 ```
+### Port forwarding
 
+The WakeOnLanServer supports configuring port forwarding on routers. Currently the only supported backend is the Unifi controller.
 
+#### Unifi setup
+1. Add a local user account to the Unifi Controller with administrator permission on the Unifi Network. This will be used as a service account by the wakeonlanserver. 
+2. Add the following to `appsettings.Production.json`:
+```json
+{
+   "PortForwarding": {
+      "UnifiClientOptions": {
+         "BaseUrl": "https://ipOrDomainOfUnifiController",
+         "AllowInvalidCertificate": true,
+         "Credentials": {
+            "UserName": "username of unifi user",
+            "Password": "password of unifi user"
+         },
+         "DefaultInterface": "name of network that should be configured e.g.: wan",
+         "TimeoutSeconds": 2
+      },
+      "Backend": "Unifi"
+   }
+}
+```
 
+Unifi comes with a self-signed certificate by default. 
+Setting AllowInvalidCertificate to true will make the WakeOnLanServer accept this certificate. 
+Otherwise the self-signed certificate will need to be installed as a trusted certificate by the machine running the WakeOnLanServer.
 
+TimeoutSeconds gives the number of seconds before the WakeOnLanServer concludes the Unifi backend must be down.
+
+#### Mock setup
+
+For testing purposes a mock backend exists. Add the following to `appsettings.Development.json` to enable the mock:
+```json
+{
+   "PortForwarding": {
+      "Backend": "Mock"
+   }
+}
+```
+
+### Configure logging
+
+By default the application has no logging. It supports logging to console and files.
+
+#### Console
+
+Add the following content to `appsettings.Production.json`:
+```json
+{
+   "Serilog": {
+      "WriteTo": [
+         {
+            "Name": "Console",
+            "Args": {
+               "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {RequestId} {Username} {ClientIp} {Message:lj}{NewLine}{Exception}"
+            }
+         }
+      ]
+   }
+}
+```
+
+### File
+
+Add the following content to `appsettings.Production.json`:
+```json
+{
+   "Serilog": {
+      "WriteTo": [
+         {
+            "Name": "File",
+            "Args": {
+               "path": "logs/log.txt",
+               "rollingInterval": "Day",
+               "rollOnFileSizeLimit": true,
+               "fileSizeLimitBytes": 1048576,
+               "retainedFileCountLimit": 10,
+               "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] {RequestId} {Username} {ClientIp} {Message:lj}{NewLine}{Exception}"
+            }
+         }
+      ]
+   }
+}
+```
+
+The example above logs to a subfolder called logs.  
+- The app pool / user account running the wakeonlanserver needs read / write / delete files access to this folder.
+- It creates a new file per day.  
+- It creates a new file if the file size exceeds 1 MB.  
+- It retains 10 files.
+
+### Output template
+
+Both the console and file sink supports changing the output template. See the specific sections for how to set it.
+
+#### Special fields
+
+- `RequestId`: This is an identifier that is displayed on the error page the user is served in production when unhandled errors occured. This can then be used to find the corresponding error in the logs.
+- `Username`: This is the username of the logged on user.
+- `ClientIp`: The IP address of the client issuing a request
+
+### Request logging
+
+The wakeonlanserver supports Serilog request logging. To enable this feature add the following to `appsettings.Production.json`:
+```json
+{
+   "UseRequestLogging": true
+}
+```
+
+### Forwarded headers
+
+If you are running the wakeonlanserver behind a reverse proxy or on IIS it is recommended to use forwarded headers to get the correct client IP. 
+
+The client IP and protocol (http or https) will then be based on the request headers X-Forwarded-For and X-Forwarded-Proto that are meant to be set by the reverse proxy.
+
+To activate this feature add the following to `appsettings.Production.json`:
+```json
+{
+   "UseForwardedHeaders": true
+}
+```
+
+### Storing secrets in Azure KeyVault
+
+The WakeOnLanServer supports storing configuration secrets in Azure KeyVault. The client application needs GET and LIST permissions to the secrets in the key vault.
+
+#### Connecting with default Azure credentials
+
+Default Azure Credentials are supported. An example would be to set the following environment variables:
+- `AZURE_TENANT_ID`: The tenant ID of the key vault.
+- `AZURE_CLIENT_ID`: The client ID of the application that has access to the key vault.
+- `AZURE_CLIENT_SECRET`: A client secret configured on the application
+
+Add the following to `appsettings.Production.json` to use default credentials:
+```json
+{
+   "AzureKeyVault": {
+      "Credentials": "Default",
+      "KeyVaultName": "nameofkeyvault"
+   }
+}
+```
+
+For more information see: 
+- https://docs.microsoft.com/en-us/dotnet/api/azure.identity.environmentcredential
+- https://docs.microsoft.com/en-us/dotnet/api/overview/azure/identity-readme#defaultazurecredential
+
+#### Connecting with client certificate
+
+Connecting with a client certificate stored in the windows certificate store is supported. 
+
+Enable this by adding the following to `appsettings.Production.json`:
+```json
+{
+   "AzureKeyVault": {
+      "Credentials": "ClientCertificate",
+      "KeyVaultName": "nameofkeyvault",
+      "ClientCertificateSettings": {
+         "StoreLocation": "CurrentUser|LocalMachine",
+         "CertificateThumbprint": "Thumbprint of certificate",
+         "ValidOnly" : true,
+         "TenantId": "The tenant id of the key vault",
+         "ClientId": "The client id of the application with access to the key vault"
+      }
+   }
+}
+```
+
+`ValidOnly` sets whether to only accept valid certificates found in the certificate store.
+
+For more information and how to generate a certificate see:
+- https://docs.microsoft.com/en-us/aspnet/core/security/key-vault-configuration?view=aspnetcore-6.0#use-application-id-and-x509-certificate-for-non-azure-hosted-apps
+
+If you want a self-signed certificate to be valid on the server that is hosting the WakeOnLanServer you need to add it to both the local machine / current user Personal store as well as to the list of Trusted Root Certificates.
+
+#### Secret naming format in Azure
+To store a secret that should be applied to a setting somewhere deep down in the configuration hierarchy,
+the name of the secret needs to contain `--` between each hierarchy level. 
+
+Here is an example of a name that sets the Unifi password:  
+`PortForwarding--UnifiClientOptions--Credentials--Password`
