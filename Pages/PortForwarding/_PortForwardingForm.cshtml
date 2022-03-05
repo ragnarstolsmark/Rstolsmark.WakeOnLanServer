@@ -3,19 +3,24 @@
 <label asp-for="Name">Name</label>
 <input asp-for="Name" required="required"/>
 <span asp-validation-for="Name"></span>
+
 <label asp-for="Protocol">Protocol</label>
 <select asp-for="Protocol" required="required" asp-items="Html.GetEnumSelectList<Protocol>()">
 </select>
 <span asp-validation-for="Protocol"></span>
+
 <label asp-for="SourceIp">Source IP</label>
 <input asp-for="SourceIp"/>
 <span asp-validation-for="SourceIp"></span>
+
 <label asp-for="SourcePort">Source port</label>
 <input asp-for="SourcePort" required min="1" max="65535"/>
 <span asp-validation-for="SourcePort"></span>
+
 <label asp-for="DestinationIp">Destination IP</label>
 <input asp-for="DestinationIp" required="required"/>
 <span asp-validation-for="DestinationIp"></span>
+
 <label asp-for="DestinationPort">Destination port</label>
 <input asp-for="DestinationPort" required="required" min="1" max="65535"/>
 <span asp-validation-for="DestinationPort"></span>
