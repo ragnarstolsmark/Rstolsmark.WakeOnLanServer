@@ -29,6 +29,10 @@ public class EditPortForwardingModel : PageModel
     }
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
         var portForwarding = await _portForwardingService.GetById(PortForwardingId);
         if (portForwarding == null)
         {

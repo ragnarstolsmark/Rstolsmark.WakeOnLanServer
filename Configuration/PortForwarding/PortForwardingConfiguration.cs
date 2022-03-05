@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
@@ -8,11 +9,11 @@ public static class PortForwardingConfiguration
 {
     public static void ConfigurePortForwarding(this WebApplicationBuilder builder, List<PolicyRole> policyRoles)
     {
-        
         var portForwardingConfiguration = builder.Configuration.GetSection("PortForwarding");
         PortForwardingSettings portForwardingSettings;
         if (portForwardingConfiguration.Exists())
         {
+            builder.Services.AddSingleton<IValidator<PortForwardingForm>, PortForwardingFormValidator>();
             portForwardingSettings = portForwardingConfiguration.Get<PortForwardingSettings>();
             switch (portForwardingSettings.Backend)
             {

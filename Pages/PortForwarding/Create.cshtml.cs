@@ -28,6 +28,10 @@ public class CreatePortForwardingModel : PageModel
     
     public async Task<IActionResult> OnPostAsync()
     {
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
         await _portForwardingService.AddPortForwarding(new PortForwardingData(Form));
         return RedirectToPage("/PortForwarding/Index");
     }

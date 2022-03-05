@@ -1,3 +1,5 @@
+using FluentValidation.AspNetCore;
+
 namespace Rstolsmark.WakeOnLanServer.Configuration;
 
 public static class RazorPagesConfiguration
@@ -14,6 +16,7 @@ public static class RazorPagesConfiguration
                     options.Conventions.AuthorizeFolder(policyRole.Folder, policyRole.Policy);
                 }
             })
+            .AddFluentValidation()
             .AddSessionStateTempDataProvider();
     }
 }
