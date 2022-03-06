@@ -1,13 +1,17 @@
 @model Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model.Computer
 
 <label asp-for="Name">Name</label>
-<input asp-for="Name"/>
+<input asp-for="Name" required="required"/>
+<span asp-validation-for="Name"></span>
 
 <label asp-for="IP">IP address</label>
-<input asp-for="IP"/>
+<input asp-for="IP" required="required"/>
+<span asp-validation-for="IP"></span>
     
 <label asp-for="MAC">MAC address</label>
-<input asp-for="MAC"/>
+<input asp-for="MAC" required="required"/>
+<span asp-validation-for="MAC"></span>
 
 <label asp-for="SubnetMask">Subnet mask</label>
-<input asp-for="SubnetMask"/>
+<input asp-for="SubnetMask" required="required"/>
+<span asp-validation-for="SubnetMask"></span>
