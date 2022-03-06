@@ -19,5 +19,10 @@
     <PackageReference Include="SeriLog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.Net.Ping" Version="4.3.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Update="data\*.*" CopyToPublishDirectory="Never" />
+    <Content Update="logs\*.*" CopyToPublishDirectory="Never" />   
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+  </ItemGroup>
   
 </Project>
