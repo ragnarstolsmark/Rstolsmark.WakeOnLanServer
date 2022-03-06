@@ -1,40 +1,30 @@
-using System.Net;
 using FluentValidation;
+using Rstolsmark.WakeOnLanServer.ValidationHelpers;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 
 public class PortForwardingFormValidator : AbstractValidator<PortForwardingForm>
 {
-    private const string IpInvalidMessage = "'{PropertyValue}' is not a valid IP.";
-    private const int MinPort = 1;
-    private const int MaxPort = 65535;
     public PortForwardingFormValidator()
     {
         RuleFor(p => p.Name)
             .NotEmpty();
-        
+
         RuleFor(p => p.Protocol)
-            .Must(protocol => Enum.IsDefined(typeof(Protocol), protocol));
+            .BeAValidProtocol();
 
         RuleFor(p => p.SourceIp)
-            .Must(BeAValidIpAddress)
-                .WithMessage(IpInvalidMessage)
+            .BeAValidIpAddress()
                 .When(p => !string.IsNullOrWhiteSpace(p.SourceIp));
         
         RuleFor(p => p.SourcePort)
-            .InclusiveBetween(MinPort, MaxPort);
-        
+            .BeAValidPort();
+
         RuleFor(p => p.DestinationIp)
             .NotEmpty()
-            .Must(BeAValidIpAddress)
-                .WithMessage(IpInvalidMessage);
+            .BeAValidIpAddress();
         
         RuleFor(p => p.DestinationPort)
-            .InclusiveBetween(MinPort, MaxPort);
-    }
-
-    private bool BeAValidIpAddress(string ipAddress)
-    {
-        return IPAddress.TryParse(ipAddress, out _);
+            .BeAValidPort();
     }
 }
