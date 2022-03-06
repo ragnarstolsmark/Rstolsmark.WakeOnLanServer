@@ -6,7 +6,7 @@ namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 public static class ComputerService
 {
     private static string computersPath => $"{AppDomain.CurrentDomain.GetData("DataDirectory")}{Path.DirectorySeparatorChar}computers.json";
-    public static Computer[] GetAllComputers()
+    private static Computer[] GetAllComputers()
     {
         if (!Exists(computersPath))
         {
@@ -19,27 +19,45 @@ public static class ComputerService
         return GetAllComputers().ToDictionary(c => c.Name);
     }
 
+    public static Computer GetComputerByName(string name)
+    {
+        var computers = GetComputerDictionary();
+        if (!computers.ContainsKey(name))
+        {
+            return null;
+        }
+        return computers[name];
+    }
+
+    public static bool DoesComputerExist(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return false;
+        }
+        return GetComputerDictionary().ContainsKey(name);
+    }
+
     public static void AddOrUpdateComputer(Computer computer)
     {
         computer.StandardizeMacAddress();
-        var computers = GetAllComputers();
-        var computerExists = false;
-        for (var i = 0; i < computers.Length; i++)
-        {
-            var comp = computers[i];
-            if (computer.Name == comp.Name)
-            {
-                computers[i] = computer;
-                computerExists = true;
-                break;
-            }
-        }
-        var newComputerList = computers.ToList();
-        if (!computerExists)
-        {
-            newComputerList.Add(computer);
-        }
+        var computers = GetComputerDictionary();
+        computers[computer.Name] = computer;
+        Save(computers);
+    }
+
+    private static void Save(Dictionary<string, Computer> computers)
+    {
+        var newComputerList = computers.Values.ToList();
         (new FileInfo(computersPath)).Directory.Create();
         WriteAllText(computersPath, JsonSerializer.Serialize(newComputerList, new JsonSerializerOptions { WriteIndented = true }));
+    }
+
+    public static void Delete(string name)
+    {
+        var computers = GetComputerDictionary();
+        if(computers.Remove(name)){
+            Save(computers);
+        }
     }
 }

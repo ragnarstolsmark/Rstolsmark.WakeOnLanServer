@@ -1,3 +1,2 @@
-todo edit of computers 
-todo fluent validation of computers and port forwardings
+todo edit of computers
 todo add wireguard support

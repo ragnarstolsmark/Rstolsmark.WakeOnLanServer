@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Logging to file and console using Serilog
 - Configuration secrets storage in Azure keyvault.
 - Support for X-Forwarded headers
+- Now possible to delete a computer from the wake on lan server
 
 ## [1.0.2] - 2019-12-06
 ### Fixed

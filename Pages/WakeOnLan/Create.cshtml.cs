@@ -18,6 +18,10 @@ public class CreateModel : PageModel
     }
     public IActionResult OnPost()
     {
+        if (DoesComputerExist(Computer.Name))
+        {
+            ModelState.AddModelError(nameof(Computer.Name), $"'{Computer.Name}' already exists.");
+        }
         if (!ModelState.IsValid)
         {
             return Page();

@@ -21,9 +21,8 @@ public class IndexModel : PageModel
 
     public IActionResult OnPost(string computerToWake)
     {
-        Computers = GetComputerDictionary();
         //Use a discard since we don't need to await the wake up since it will not start up fast enough to reply to the next ping anyway
-        _ = Computers[computerToWake].WakeUp();
+        _ = GetComputerByName(computerToWake).WakeUp();
         TempData["Message"] = $"Magic packet sent to computer {@computerToWake}. It can take some time before it wakes up since it needs to boot first.";
         return RedirectToPage("/WakeOnLan/Index");
     }

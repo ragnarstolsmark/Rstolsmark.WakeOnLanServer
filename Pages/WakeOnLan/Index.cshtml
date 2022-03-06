@@ -18,7 +18,8 @@
                 <div class="main-grid-item-actions">
                     <form method="post" if="!computer.IsWoken()" asp-route-computerToWake="@computer.Name">
                         <button>Wake up</button>
-                    </form> 
+                    </form>
+                    <a asp-page="/WakeOnLan/Delete" asp-route-ComputerName="@computer.Name">Delete</a>
                     <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>
                 </div>
             </div>
