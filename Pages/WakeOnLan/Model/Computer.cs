@@ -36,13 +36,18 @@ public class Computer
         return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
     }
 
+    private PhysicalAddress GetPhysicalAddress()
+    {
+        return PhysicalAddress.Parse(MAC);
+    }
+
     public async Task WakeUp()
     {
         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         s.EnableBroadcast = true;
         IPAddress broadcast = GetBroadcastAddress();
         byte[] prefix = new byte[] { 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F };
-        var pureMac = MacToByteArrayToSend(MAC);
+        var pureMac = GetPhysicalAddress().GetAddressBytes();
         byte[] sendbuf = prefix;
         for (int i = 1; i <= 16; i++)
         {
@@ -50,15 +55,5 @@ public class Computer
         }
         IPEndPoint ep = new IPEndPoint(broadcast, 9);
         await s.SendToAsync(sendbuf, SocketFlags.None, ep);
-        byte[] MacToByteArrayToSend(string mac)
-        {
-            byte[] bytes = new byte[6];
-            var hexStrings = mac.Split(":");
-            for (int i = 0; i < 6; i++)
-            {
-                bytes[i] = Convert.ToByte(hexStrings[i], 16);
-            }
-            return bytes;
-        }
     }
 }
