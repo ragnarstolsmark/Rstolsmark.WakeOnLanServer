@@ -22,26 +22,23 @@ public class Computer
         Woken = reply.Status == IPStatus.Success;
     }
 
-    [JsonIgnore]
-    public IPAddress BroadcastAddress
-    {
-        get
-        {
-            var address = IPAddress.Parse(IP);
-            var mask = IPAddress.Parse(SubnetMask);
-            uint ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
-            uint ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
-            uint broadCastIpAddress = ipAddress | ~ipMaskV4;
 
-            return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
-        }
+    private IPAddress GetBroadcastAddress()
+    {
+        var address = IPAddress.Parse(IP);
+        var mask = IPAddress.Parse(SubnetMask);
+        uint ipAddress = BitConverter.ToUInt32(address.GetAddressBytes(), 0);
+        uint ipMaskV4 = BitConverter.ToUInt32(mask.GetAddressBytes(), 0);
+        uint broadCastIpAddress = ipAddress | ~ipMaskV4;
+
+        return new IPAddress(BitConverter.GetBytes(broadCastIpAddress));
     }
 
     public async Task WakeUp()
     {
         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         s.EnableBroadcast = true;
-        IPAddress broadcast = BroadcastAddress;
+        IPAddress broadcast = GetBroadcastAddress();
         byte[] prefix = new byte[] { 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F, 0xF_F };
         var pureMac = MacToByteArrayToSend(MAC);
         byte[] sendbuf = prefix;
@@ -61,6 +58,5 @@ public class Computer
             }
             return bytes;
         }
-
     }
 }
