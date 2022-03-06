@@ -7,16 +7,7 @@
     <li><a href="https://www.groovypost.com/howto/enable-wake-on-lan-windows-10/">Activate Wake On Lan</a></li>
 </ul>
 <form method="POST" class="main-form">
-    <label asp-for="Computer.Name">Name</label>
-    <input asp-for="Computer.Name"/>
-
-    <label asp-for="Computer.IP">IP address</label>
-    <input asp-for="Computer.IP"/>
-    
-    <label asp-for="Computer.MAC">MAC address</label>
-    <input asp-for="Computer.MAC"/>
-
-    <label asp-for="Computer.SubnetMask">Subnet mask</label>
-    <input asp-for="Computer.SubnetMask"/>
+    <partial name="_ComputerForm" model="@Model.Computer"/>
     <button>Add</button>
 </form>
+//todo: fix bug caused by computerform not being a type, this causes ipaddress to be accessed Amend commit add fluent validation
