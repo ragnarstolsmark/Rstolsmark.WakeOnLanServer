@@ -1,4 +1,5 @@
 using FluentValidation;
+using Rstolsmark.WakeOnLanServer.ValidationHelpers;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 
@@ -10,12 +11,15 @@ public class ComputerValidator : AbstractValidator<Computer>
             .NotEmpty();
 
         RuleFor(p => p.IP)
-            .NotEmpty();
+            .NotEmpty()
+            .BeAValidIpAddress();
 
         RuleFor(p => p.MAC)
-            .NotEmpty();
+            .NotEmpty()
+            .BeAValidMacAddress();
 
         RuleFor(p => p.SubnetMask)
-            .NotEmpty();
+            .NotEmpty()
+            .BeAValidIpAddress();//todo: only allow valid sub net masks
     }
 }
