@@ -41,6 +41,11 @@ public class Computer
         return PhysicalAddress.Parse(MAC);
     }
 
+    public void StandardizeMacAddress()
+    {
+        MAC = string.Join (":", GetPhysicalAddress().GetAddressBytes().Select(b => b.ToString("X2")));
+    }
+
     public async Task WakeUp()
     {
         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);

@@ -21,6 +21,7 @@ public static class ComputerService
 
     public static void AddOrUpdateComputer(Computer computer)
     {
+        computer.StandardizeMacAddress();
         var computers = GetAllComputers();
         var computerExists = false;
         for (var i = 0; i < computers.Length; i++)
