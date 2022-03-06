@@ -21,6 +21,10 @@ public static class ComputerService
 
     public static Computer GetComputerByName(string name)
     {
+        if (string.IsNullOrEmpty(name))
+        {
+            return null;
+        }
         var computers = GetComputerDictionary();
         if (!computers.ContainsKey(name))
         {
@@ -38,12 +42,22 @@ public static class ComputerService
         return GetComputerDictionary().ContainsKey(name);
     }
 
-    public static void AddOrUpdateComputer(Computer computer)
+    private static void AddOrUpdateComputer(string name, Computer computer)
     {
         computer.StandardizeMacAddress();
         var computers = GetComputerDictionary();
-        computers[computer.Name] = computer;
+        computers[name] = computer;
         Save(computers);
+    }
+    
+    public static void AddComputer(Computer computer)
+    {
+        AddOrUpdateComputer(computer.Name, computer);
+    }
+
+    public static void EditComputer(string name, Computer computer)
+    {
+        AddOrUpdateComputer(name, computer);
     }
 
     private static void Save(Dictionary<string, Computer> computers)
