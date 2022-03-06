@@ -33,11 +33,11 @@ public static class WakeOnLanIndexExtensions
 {
     public static string GetAwakeClass(this Computer computer)
     {
-        return computer.Woken ? "enabled" : string.Empty;
+        return computer.IsWoken() ? "enabled" : string.Empty;
     }
 
     public static string GetAwakeMessage(this Computer computer)
     {
-        return computer.Woken ? "Awake" : "Sleeping";
+        return computer.IsWoken() ? "Awake" : "Sleeping";
     }
 }

@@ -16,7 +16,7 @@
                     <div class="main-grid-item-property-value">@computer.SubnetMask</div>
                 </div>
                 <div class="main-grid-item-actions">
-                    <form method="post" if="!computer.Woken" asp-route-computerToWake="@computer.Name">
+                    <form method="post" if="!computer.IsWoken()" asp-route-computerToWake="@computer.Name">
                         <button>Wake up</button>
                     </form> 
                     <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>

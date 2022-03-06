@@ -1,28 +1,30 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Text.Json.Serialization;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 
 public class Computer
 {
+    private bool _woken;
     public string Name { get; set; }
     public string IP { get; set; }
     public string MAC { get; set; }
     public string SubnetMask { get; set; }
-    [JsonIgnore]
-    public bool Woken { get; set; }
+    
+    public bool IsWoken()
+    {
+        return _woken;
+    }
 
     public async Task Ping()
     {
         Ping pingSender = new Ping();
         //Send with a low timeout since it is on LAN and to prevent slow page load if computers are offline
         PingReply reply = await pingSender.SendPingAsync(IP, 50);
-        Woken = reply.Status == IPStatus.Success;
+        _woken = reply.Status == IPStatus.Success;
     }
-
-
+    
     private IPAddress GetBroadcastAddress()
     {
         var address = IPAddress.Parse(IP);
