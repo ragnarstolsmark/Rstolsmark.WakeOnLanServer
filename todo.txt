@@ -1,2 +1,2 @@
 todo add wireguard support
-todo publish version 2.0.0 to docker hub
+todo publish version 2.0.1 to docker hub
