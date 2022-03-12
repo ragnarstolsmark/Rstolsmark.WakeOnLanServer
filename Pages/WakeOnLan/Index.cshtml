@@ -2,7 +2,7 @@
 @model IndexModel
 <h1>Wake on LAN status</h1>
 <div class="main-grid" if="Model.Computers.Any()">
-    @foreach (var computer in Model.Computers.Values)
+    @foreach (var computer in Model.Computers)
     {
         <div class="main-grid-item">
             <h4 class="main-grid-item-name @computer.GetAwakeClass()">@computer.Name (@computer.GetAwakeMessage())</h4>

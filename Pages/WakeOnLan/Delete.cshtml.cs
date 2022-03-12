@@ -1,17 +1,23 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model.ComputerService;
+using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
 public class DeleteComputer : PageModel
 {
+    private ComputerService _computerService;
+    public DeleteComputer(ComputerService computerService)
+    {
+        _computerService = computerService;
+    }
+
     [BindProperty(SupportsGet = true)]
     public string ComputerName { get; set; }
 
     public ActionResult OnGetAsync()
     {
-        if (!DoesComputerExist(ComputerName))
+        if (!_computerService.DoesComputerExist(ComputerName))
         {
             return NotFound();
         }
@@ -20,11 +26,11 @@ public class DeleteComputer : PageModel
 
     public ActionResult OnPostAsync()
     {
-        if (!DoesComputerExist(ComputerName))
+        if (!_computerService.DoesComputerExist(ComputerName))
         {
             return NotFound();
         }
-        Delete(ComputerName);
+        _computerService.Delete(ComputerName);
         return RedirectToPage("/WakeOnLan/Index");
     }
 }

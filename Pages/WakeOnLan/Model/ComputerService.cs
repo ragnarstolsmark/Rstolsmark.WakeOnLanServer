@@ -3,23 +3,35 @@ using static System.IO.File;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
 
-public static class ComputerService
+public class ComputerService
 {
-    private static string computersPath => $"{AppDomain.CurrentDomain.GetData("DataDirectory")}{Path.DirectorySeparatorChar}computers.json";
-    private static Computer[] GetAllComputers()
+
+    public ComputerService()
     {
-        if (!Exists(computersPath))
-        {
-            return new Computer[] { };
-        }
-        return JsonSerializer.Deserialize<Computer[]>(ReadAllText(computersPath));
+        computersPath = $"{AppDomain.CurrentDomain.GetData("DataDirectory")}{Path.DirectorySeparatorChar}computers.json";
+        _computers = new Lazy<Computer[]>(GetComputersFromFile);
+        _computerDictionary = new Lazy<Dictionary<string, Computer>>(CreateComputerDictionary);
     }
-    public static Dictionary<string, Computer> GetComputerDictionary()
+
+    private string computersPath;
+
+    private Lazy<Computer[]> _computers;
+    private Lazy<Dictionary<string, Computer>> _computerDictionary;
+
+    public Computer[] GetAllComputers(){
+        return _computers.Value;
+    }
+
+    private Dictionary<string, Computer> GetComputerDictionary(){
+        return _computerDictionary.Value;
+    }
+
+    private Dictionary<string, Computer> CreateComputerDictionary()
     {
         return GetAllComputers().ToDictionary(c => c.Name);
     }
 
-    public static Computer GetComputerByName(string name)
+    public Computer GetComputerByName(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -33,7 +45,7 @@ public static class ComputerService
         return computers[name];
     }
 
-    public static bool DoesComputerExist(string name)
+    public bool DoesComputerExist(string name)
     {
         if (string.IsNullOrEmpty(name))
         {
@@ -42,7 +54,7 @@ public static class ComputerService
         return GetComputerDictionary().ContainsKey(name);
     }
 
-    private static void AddOrUpdateComputer(string name, Computer computer)
+    private void AddOrUpdateComputer(string name, Computer computer)
     {
         computer.StandardizeMacAddress();
         var computers = GetComputerDictionary();
@@ -50,28 +62,37 @@ public static class ComputerService
         Save(computers);
     }
     
-    public static void AddComputer(Computer computer)
+    public void AddComputer(Computer computer)
     {
         AddOrUpdateComputer(computer.Name, computer);
     }
 
-    public static void EditComputer(string name, Computer computer)
+    public void EditComputer(string name, Computer computer)
     {
         AddOrUpdateComputer(name, computer);
     }
 
-    private static void Save(Dictionary<string, Computer> computers)
-    {
-        var newComputerList = computers.Values.ToList();
-        (new FileInfo(computersPath)).Directory.Create();
-        WriteAllText(computersPath, JsonSerializer.Serialize(newComputerList, new JsonSerializerOptions { WriteIndented = true }));
-    }
-
-    public static void Delete(string name)
+    public void Delete(string name)
     {
         var computers = GetComputerDictionary();
         if(computers.Remove(name)){
             Save(computers);
         }
+    }
+
+    private Computer[] GetComputersFromFile()
+    {
+        if (!Exists(computersPath))
+        {
+            return new Computer[] { };
+        }
+        return JsonSerializer.Deserialize<Computer[]>(ReadAllText(computersPath));
+    }
+
+    private void Save(Dictionary<string, Computer> computers)
+    {
+        var newComputerList = computers.Values.ToList();
+        (new FileInfo(computersPath)).Directory.Create();
+        WriteAllText(computersPath, JsonSerializer.Serialize(newComputerList, new JsonSerializerOptions { WriteIndented = true }));
     }
 }

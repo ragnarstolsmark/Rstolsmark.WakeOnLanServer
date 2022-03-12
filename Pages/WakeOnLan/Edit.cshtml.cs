@@ -1,17 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
-using static Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model.ComputerService;
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 public class EditComputerModel : PageModel
 {
+    private ComputerService _computerService;
+    public EditComputerModel(ComputerService computerService)
+    {
+        _computerService = computerService;
+    }
+
     [BindProperty(SupportsGet = true)]
     public string ComputerName { get; set; }
     [BindProperty] 
     public Computer Computer { get; set; }
     public ActionResult OnGetAsync()
     {
-        Computer = GetComputerByName(ComputerName);
+        Computer = _computerService.GetComputerByName(ComputerName);
         if (Computer == null)
         {
             return NotFound();
@@ -20,7 +25,7 @@ public class EditComputerModel : PageModel
     }
     public ActionResult OnPostAsync()
     {
-        if (ComputerName != Computer.Name && DoesComputerExist(Computer.Name))
+        if (ComputerName != Computer.Name && _computerService.DoesComputerExist(Computer.Name))
         {
             ModelState.AddModelError(nameof(Computer.Name), $"'{Computer.Name}' already exists.");
         }
@@ -28,11 +33,11 @@ public class EditComputerModel : PageModel
         {
             return Page();
         }
-        if (!DoesComputerExist(ComputerName))
+        if (!_computerService.DoesComputerExist(ComputerName))
         {
             return NotFound();
         }
-        EditComputer(ComputerName, Computer);
+        _computerService.EditComputer(ComputerName, Computer);
         return RedirectToPage("/WakeOnLan/Index");
     }
 }
