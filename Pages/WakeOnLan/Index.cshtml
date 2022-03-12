@@ -1,5 +1,7 @@
 ﻿@page
 @model IndexModel
+@using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding
+@inject PortForwardingSettings _portForwardingSettings
 <h1>Wake on LAN status</h1>
 <div class="main-grid" if="Model.Computers.Any()">
     @foreach (var computer in Model.Computers)
@@ -21,7 +23,10 @@
                     </form>
                     <a asp-page="/WakeOnLan/Edit" asp-route-ComputerName="@computer.Name">Edit</a>
                     <a asp-page="/WakeOnLan/Delete" asp-route-ComputerName="@computer.Name">Delete</a>
-                    <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>
+                    @if(_portForwardingSettings.Backend != PortForwardingBackend.None)
+                    {
+                        <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>
+                    }
                 </div>
             </div>
         </div>

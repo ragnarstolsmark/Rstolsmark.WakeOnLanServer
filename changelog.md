@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed the computer service to be scoped instead of static
 ### Fixed
 - The main grid is reduced to one column on small screens.
+- The forward port link is only shown when port forwarding is configured.
 
 ## [2.0.0] - 2022-03-06
 ### Added
