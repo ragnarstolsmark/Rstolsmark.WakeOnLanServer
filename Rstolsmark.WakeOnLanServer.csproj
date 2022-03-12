@@ -21,7 +21,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Update="data\*.*" CopyToPublishDirectory="Never" />
-    <Content Update="logs\*.*" CopyToPublishDirectory="Never" />   
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
   
