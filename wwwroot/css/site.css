@@ -30,9 +30,15 @@ button {
 
 .main-grid {
   display: grid;
-  grid-template-columns: max-content max-content;
+  grid-template-columns: max-content;
   grid-auto-rows: auto;
   grid-gap: 1rem;
+}
+
+@media screen and (min-width: 708px) {
+  .main-grid {
+    grid-template-columns: max-content max-content;
+  }
 }
 
 .main-grid-item {
