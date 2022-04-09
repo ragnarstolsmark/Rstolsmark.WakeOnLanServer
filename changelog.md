@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Fixed
 - Unifi source and destination port was flipped.
+- Unifi port forwardings are now enabled when created.
 
 ## [2.0.1] - 2022-03-12
 ### Changed

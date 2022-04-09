@@ -105,6 +105,7 @@ public class UnifiPortForwardingService : IPortForwardingService
     public async Task AddPortForwarding(PortForwardingData portForwardingData)
     {
         var unifiPortForwardingForm = MapWakeOnLanServerPortForwardingDataToUnifiPortForwardingData(portForwardingData);
+        unifiPortForwardingForm.Enabled = true;
         await _unifiClient.CreatePortForwardSetting(unifiPortForwardingForm)
             .WithTimeoutHandling();
     }
