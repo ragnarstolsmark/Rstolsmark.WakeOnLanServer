@@ -71,9 +71,9 @@ public class UnifiPortForwardingService : IPortForwardingService
             Enabled = unifiPortForward.Enabled,
             Protocol = unifiPortForward.Protocol == "tcp_udp" ? Protocol.Any : Enum.Parse<Protocol>(unifiPortForward.Protocol.ToUpper()),
             SourceIp = string.IsNullOrEmpty(unifiPortForward.Source) || unifiPortForward.Source == "any" ? null : IPAddress.Parse(unifiPortForward.Source),
-            SourcePort = int.Parse(unifiPortForward.ForwardPort),
+            SourcePort = int.Parse(unifiPortForward.DestinationPort),
             DestinationIp = IPAddress.Parse(unifiPortForward.Forward),
-            DestinationPort = int.Parse(unifiPortForward.DestinationPort)
+            DestinationPort = int.Parse(unifiPortForward.ForwardPort)
         };
     }
 
@@ -84,9 +84,9 @@ public class UnifiPortForwardingService : IPortForwardingService
             Name = portForwardingData.Name,
             Protocol = portForwardingData.Protocol == Protocol.Any ? "tcp_udp" : portForwardingData.Protocol.ToString().ToLower(),
             Source = portForwardingData.SourceIp?.ToString() ?? "any",
-            ForwardPort = portForwardingData.SourcePort.ToString(),
+            ForwardPort = portForwardingData.DestinationPort.ToString(),
             Forward = portForwardingData.DestinationIp.ToString(),
-            DestinationPort = portForwardingData.DestinationPort.ToString()
+            DestinationPort = portForwardingData.SourcePort.ToString()
         };
     }
 
