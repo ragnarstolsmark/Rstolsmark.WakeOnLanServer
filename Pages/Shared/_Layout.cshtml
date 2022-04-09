@@ -1,5 +1,7 @@
 ﻿@using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding
+@using Rstolsmark.WakeOnLanServer.Services
 @inject PortForwardingSettings _portForwardingSettings
+@inject ProgramVersion _programVersion
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,11 +38,14 @@
         }
     </menu>
 </header>
-    <main role="main">
-        <p class="alert" if='TempData.ContainsKey("Message")'>
-            @TempData["Message"]
-        </p>
-        @RenderBody()
-    </main>
+<main role="main">
+    <p class="alert" if='TempData.ContainsKey("Message")'>
+        @TempData["Message"]
+    </p>
+    @RenderBody()
+</main>
+<footer>
+    <span>Version: @_programVersion.GetVersion()</span>
+</footer>
 </body>
 </html>

@@ -3,13 +3,18 @@
   margin: auto;
   padding-left:20px;
   padding-right:20px;
-  padding-bottom:20px;
-  margin-top: 20px;
   background: #f2f2f2;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a, a:visited{
   color: black;
+}
+
+header{
+  margin-top: 20px;
 }
 
 header > menu{
@@ -96,4 +101,13 @@ button {
 }
 label{
   font-weight: 700;
+}
+footer{
+  margin-top: auto;
+  min-height: 50px;
+  display: flex;
+  justify-content: center;
+}
+footer span{
+  margin-top: 10px;
 }

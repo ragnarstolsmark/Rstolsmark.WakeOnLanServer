@@ -1,5 +1,6 @@
 ﻿using Rstolsmark.WakeOnLanServer.Configuration;
 using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding;
+using Rstolsmark.WakeOnLanServer.Services;
 using Serilog;
 
 LoggingConfiguration.ConfigureBootstrapLogger();
@@ -9,6 +10,7 @@ try
     var builder = WebApplication.CreateBuilder(args);
     builder.ConfigureAzureKeyVault();
     builder.ConfigureLogger();
+    builder.Services.AddSingleton<ProgramVersion>();
     var policyRoles = new List<PolicyRole>();
     builder.ConfigurePortForwarding(policyRoles);
     builder.ConfigureWakeOnLan(policyRoles);
