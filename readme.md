@@ -4,7 +4,7 @@ Asp.Net Http server to enable wake on lan for computers behind a firewall. It al
 
 ## Requirements
 
- - .NET 6 runtime
+ - .NET 8 runtime
 
 ## Usage
 
