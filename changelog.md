@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Updated to .NET 8
+- Updated Nuget packages
+- Removed unused FluentValidation client side validation 
 
 ## [2.0.2] - 2022-04-09
 ### Added

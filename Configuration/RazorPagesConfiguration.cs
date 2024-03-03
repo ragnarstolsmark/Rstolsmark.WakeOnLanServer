@@ -7,6 +7,7 @@ public static class RazorPagesConfiguration
     public static IMvcBuilder ConfigureRazorPages(this WebApplicationBuilder builder, IEnumerable<PolicyRole> policyRoles)
     {
         return builder.Services
+            .AddFluentValidationAutoValidation()
             .AddRazorPages(options =>
             {
                 options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
@@ -15,7 +16,6 @@ public static class RazorPagesConfiguration
                     options.Conventions.AuthorizeFolder(policyRole.Folder, policyRole.Policy);
                 }
             })
-            .AddFluentValidation()
             .AddSessionStateTempDataProvider();
     }
 }
