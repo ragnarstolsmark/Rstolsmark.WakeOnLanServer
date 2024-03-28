@@ -6,8 +6,19 @@ public static class RazorPagesConfiguration
 {
     public static IMvcBuilder ConfigureRazorPages(this WebApplicationBuilder builder, IEnumerable<PolicyRole> policyRoles)
     {
+        builder.Services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                "en-US",
+            };
+            options.SetDefaultCulture(supportedCultures[0])
+                .AddSupportedCultures(supportedCultures)
+                .AddSupportedUICultures(supportedCultures);
+        });
         return builder.Services
             .AddFluentValidationAutoValidation()
+            .AddLocalization()
             .AddRazorPages(options =>
             {
                 options.Conventions.AddPageRoute("/WakeOnLan/Index", "/");
@@ -16,6 +27,7 @@ public static class RazorPagesConfiguration
                     options.Conventions.AuthorizeFolder(policyRole.Folder, policyRole.Policy);
                 }
             })
+            .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
             .AddSessionStateTempDataProvider();
     }
 }
