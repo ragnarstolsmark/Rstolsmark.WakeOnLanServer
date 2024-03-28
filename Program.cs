@@ -36,6 +36,7 @@ try
     app.UseHttpsRedirection();
     //Serve the static files before authentication and authorization to allow anonymous access.
     app.UseStaticFiles();
+    app.UseRequestLocalization();
     app.ConfigureRequestLogging();
     app.ConfigurePasswordAuthentication();
     if (azureAdConfiguration.Exists())
