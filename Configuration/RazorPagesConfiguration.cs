@@ -11,6 +11,8 @@ public static class RazorPagesConfiguration
             var supportedCultures = new[]
             {
                 "en-US",
+                "nb-NO",
+                "nn-NO"
             };
             options.SetDefaultCulture(supportedCultures[0])
                 .AddSupportedCultures(supportedCultures)
