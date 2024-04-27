@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Error" xml:space="preserve">
+        <value>Feil</value>
+    </data>
+    <data name="An error occurred while processing your request." xml:space="preserve">
+        <value>En feil oppstod under prosessering av din forespørsel.</value>
+    </data>
+    <data name="Request ID:" xml:space="preserve">
+        <value>Forespørselsid:</value>
+    </data>
+    <data name="Development Mode" xml:space="preserve">
+        <value>Utviklingsmodus</value>
+    </data>
+    <data name="Swapping to the &lt;strong&gt;Development&lt;/strong&gt; environment displays detailed information about the error that occurred." xml:space="preserve">
+        <value>Dersom du bytter til &lt;strong&gt;Development&lt;/strong&gt; miljø får du detaljert informasjon om feilen som oppstod.</value>
+    </data>
+    <data name="The Development environment shouldn't be enabled for deployed applications." xml:space="preserve">
+        <value>Development miljø bør ikke være på for applikasjoner i produksjon.</value>
+    </data>
+    <data name="It can result in displaying sensitive information from exceptions to end users." xml:space="preserve">
+        <value>Det kan føre til at sensitiv informasjon fra unntak blir vist til sluttbrukere.</value>
+    </data>
+    <data name="For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt; and restarting the app." xml:space="preserve">
+        <value>For lokal feilsøking, skru på &lt;strong&gt;Development&lt;/strong&gt; miljø ved å sette &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; miljøvariabelen til &lt;strong&gt;Development&lt;/strong&gt; og restart applikasjonen.</value>
+    </data>
+</root>
