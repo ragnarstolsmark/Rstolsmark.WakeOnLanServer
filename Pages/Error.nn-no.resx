@@ -1,0 +1,38 @@
+<root>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Error" xml:space="preserve">
+        <value>Feil</value>
+    </data>
+    <data name="An error occurred while processing your request." xml:space="preserve">
+        <value>Ein feil oppstod under prosessering av din førespurnad</value>
+    </data>
+    <data name="Request ID:" xml:space="preserve">
+        <value>Førespurnadsid</value>
+    </data>
+    <data name="Development Mode" xml:space="preserve">
+        <value>Utviklingsmodus</value>
+    </data>
+    <data name="Swapping to the &lt;strong&gt;Development&lt;/strong&gt; environment displays detailed information about the error that occurred." xml:space="preserve">
+        <value>Om du byttar til &lt;strong&gt;Development&lt;/strong&gt; miljø får du detaljert informasjon om feilen som oppstod.</value>
+    </data>
+    <data name="The Development environment shouldn't be enabled for deployed applications." xml:space="preserve">
+        <value>Development miljø bør ikkje vere på for applikasjonar i produksjon.</value>
+    </data>
+    <data name="It can result in displaying sensitive information from exceptions to end users." xml:space="preserve">
+        <value>Det kan føra til at sensitiv informasjon frå unntak blir vist til sluttbrukarar.</value>
+    </data>
+    <data name="For local debugging, enable the &lt;strong&gt;Development&lt;/strong&gt; environment by setting the &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; environment variable to &lt;strong&gt;Development&lt;/strong&gt; and restarting the app." xml:space="preserve">
+        <value>For lokal feilsøking, skru på &lt;strong&gt;Development&lt;/strong&gt; miljø ved å sette &lt;strong&gt;ASPNETCORE_ENVIRONMENT&lt;/strong&gt; miljøvariabelen til &lt;strong&gt;Development&lt;/strong&gt; og restart applikasjonen.</value>
+    </data>
+</root>
