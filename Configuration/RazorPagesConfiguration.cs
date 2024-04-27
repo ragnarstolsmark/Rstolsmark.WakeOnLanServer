@@ -5,7 +5,7 @@ namespace Rstolsmark.WakeOnLanServer.Configuration;
 
 public static class RazorPagesConfiguration
 {
-    public static IMvcBuilder ConfigureRazorPages(this WebApplicationBuilder builder, IEnumerable<PolicyRole> policyRoles)
+    public static IMvcBuilder ConfigureRazorPages(this WebApplicationBuilder builder, IReadOnlyCollection<PolicyRole> policyRoles)
     {
         builder.Services.Configure<RequestLocalizationOptions>(options =>
         {

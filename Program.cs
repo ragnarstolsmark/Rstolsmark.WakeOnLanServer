@@ -11,9 +11,10 @@ try
     builder.ConfigureAzureKeyVault();
     builder.ConfigureLogger();
     builder.Services.AddSingleton<ProgramVersion>();
-    var policyRoles = new List<PolicyRole>();
-    builder.ConfigurePortForwarding(policyRoles);
-    builder.ConfigureWakeOnLan(policyRoles);
+    var portForwardingSettings = builder.ConfigurePortForwarding();
+    builder.ConfigureWakeOnLan();
+    var policyRoles =
+        AuthorizationConfiguration.GetPolicyRolesFromConfiguration(builder.Configuration, portForwardingSettings);
     var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
     var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
     if (azureAdConfiguration.Exists())
