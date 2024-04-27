@@ -7,24 +7,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wake on LAN server</title>
+    <title>@Localizer["Wake on LAN server"]</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
 </head>
 <body>
 <header>
     <menu>
-        <li><b>Wake on LAN</b>
+        <li><b>@Localizer["Wake on LAN"]</b>
             <ul>
-                <li><a asp-page="/WakeOnLan/Index">Status</a></li>
-                <li><a asp-page="/WakeOnLan/Create">Add computer</a></li>
+                <li><a asp-page="/WakeOnLan/Index">@Localizer["Status"]</a></li>
+                <li><a asp-page="/WakeOnLan/Create">@Localizer["Add computer"]</a></li>
             </ul>
         </li>
         @if (_portForwardingSettings.Backend != PortForwardingBackend.None)
         {
-            <li><b>Port forwarding</b>
+            <li><b>@Localizer["Port forwarding"]</b>
                 <ul>
-                    <li><a asp-page="/PortForwarding/Index">Status</a></li>
-                    <li><a asp-page="/PortForwarding/Create">Add port forwarding</a></li>
+                    <li><a asp-page="/PortForwarding/Index">@Localizer["Status"]</a></li>
+                    <li><a asp-page="/PortForwarding/Create">@Localizer["Add port forwarding"]</a></li>
                 </ul>
             </li>
         }
@@ -32,7 +32,7 @@
         {
             <li><b>@User.Identity.Name</b>
                 <ul>
-                    <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">Sign out</a></li>
+                    <li><a asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">@Localizer["Sign out"]</a></li>
                 </ul>
             </li>
         }
@@ -45,7 +45,7 @@
     @RenderBody()
 </main>
 <footer>
-    <span>Version: @_programVersion.GetVersion()</span>
+    <span>@Localizer["Version"]: @_programVersion.GetVersion()</span>
 </footer>
 </body>
 </html>
