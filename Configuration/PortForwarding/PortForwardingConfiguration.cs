@@ -7,7 +7,7 @@ namespace Rstolsmark.WakeOnLanServer.Configuration.PortForwarding;
 
 public static class PortForwardingConfiguration
 {
-    public static void ConfigurePortForwarding(this WebApplicationBuilder builder, List<PolicyRole> policyRoles)
+    public static PortForwardingSettings ConfigurePortForwarding(this WebApplicationBuilder builder)
     {
         var portForwardingConfiguration = builder.Configuration.GetSection("PortForwarding");
         PortForwardingSettings portForwardingSettings;
@@ -38,15 +38,7 @@ public static class PortForwardingConfiguration
                 Backend = PortForwardingBackend.None
             };
         }
-        var portForwardingAccessRequiresRole = !string.IsNullOrEmpty(portForwardingSettings.PortForwardingRole);
-        if (portForwardingAccessRequiresRole)
-        {
-            policyRoles.Add(new PolicyRole(
-                policy: "RequirePortForwardingRole",
-                role: portForwardingSettings.PortForwardingRole,
-                folder: "/PortForwarding")
-            );
-        }
         builder.Services.AddSingleton(portForwardingSettings);
+        return portForwardingSettings;
     }
 }
