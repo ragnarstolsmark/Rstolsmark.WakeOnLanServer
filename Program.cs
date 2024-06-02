@@ -13,16 +13,32 @@ try
     builder.Services.AddSingleton<ProgramVersion>();
     var portForwardingSettings = builder.ConfigurePortForwarding();
     builder.ConfigureWakeOnLan();
-    var policyRoles =
-        AuthorizationConfiguration.GetPolicyRolesFromConfiguration(builder.Configuration, portForwardingSettings);
-    var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
     var azureAdConfiguration = builder.Configuration.GetSection("AzureAd");
+    IReadOnlyCollection<PolicyRole> policyRoles;
     if (azureAdConfiguration.Exists())
     {
-        builder.AddAzureAdAuthentication(mvcBuilder, azureAdConfiguration, policyRoles);
+        policyRoles =
+            builder.ConfigureAuthorization(portForwardingSettings);
+    }
+    else
+    {
+        policyRoles = [];
     }
 
+    builder.ConfigureWebApi();
+    var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
+    if (azureAdConfiguration.Exists())
+    {
+        builder.AddAzureAdAuthentication(mvcBuilder, azureAdConfiguration);
+    }
     builder.Services.AddSession();
+    builder.Services.AddProblemDetails(options =>
+    {
+        options.CustomizeProblemDetails = context =>
+        {
+            context.ProblemDetails.Extensions["requestId"] = context.HttpContext.TraceIdentifier;
+        };
+    });
     var app = builder.Build();
     var basedir = app.Environment.ContentRootPath;
     AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(basedir, "data"));
