@@ -99,4 +99,24 @@ public class PortForwardingController : ControllerBase
         await _portForwardingService.Delete(id);
         return Ok();
     }
+
+    [HttpPost]
+    [Route("{id}/enable")]
+    public async Task<IActionResult> EnableById(string id){
+
+        if (!PortForwardingIsConfigured())
+        {
+            return NotFound();
+        }
+        if (!await UserIsAuthorizedForPortForwardingAccess())
+        {
+            return Forbid();
+        }
+        var portForwarding = await _portForwardingService.GetById(id);
+        if(portForwarding == null){
+            return NotFound();
+        }
+        await _portForwardingService.Enable(id);
+        return Ok();
+    }
 }
