@@ -22,6 +22,9 @@
   <ItemGroup>
     <Content Update="data\*.*" CopyToPublishDirectory="Never" />
     <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
+    <Content Update="appsettings.Production.json">
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
   
 </Project>
