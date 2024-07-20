@@ -57,7 +57,7 @@ public class PortForwardingController : ControllerBase
         
         var portForwardingResult =
             portForwardings
-                .Select(p => new PortForwardingWithIdDto(p));
+                .Select(p => new PortForwardingWithIdAndEnabledDto(p));
         return Ok(portForwardingResult);
     }
 
@@ -77,7 +77,7 @@ public class PortForwardingController : ControllerBase
         if(portForwarding == null){
             return NotFound();
         }
-        return Ok(new PortForwardingWithIdDto(portForwarding));
+        return Ok(new PortForwardingWithIdAndEnabledDto(portForwarding));
     }
 
     [HttpDelete]
