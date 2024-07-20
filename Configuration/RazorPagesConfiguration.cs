@@ -1,4 +1,3 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 namespace Rstolsmark.WakeOnLanServer.Configuration;
@@ -18,7 +17,6 @@ public static class RazorPagesConfiguration
                 .AddSupportedUICultures(supportedCultures);
         });
         return builder.Services
-            .AddFluentValidationAutoValidation()
             .AddLocalization()
             .AddRazorPages(options =>
             {
