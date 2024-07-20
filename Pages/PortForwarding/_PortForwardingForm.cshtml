@@ -1,5 +1,6 @@
 @using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model
-@model Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.PortForwardingForm
+@using Rstolsmark.WakeOnLanServer.Services.PortForwarding
+@model PortForwardingDto
 <label asp-for="Name">Name</label>
 <input asp-for="Name" required="required"/>
 <span asp-validation-for="Name"></span>

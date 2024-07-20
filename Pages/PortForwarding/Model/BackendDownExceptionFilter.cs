@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 

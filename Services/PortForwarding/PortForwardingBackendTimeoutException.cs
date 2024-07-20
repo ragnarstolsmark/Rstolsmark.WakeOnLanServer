@@ -1,4 +1,4 @@
-namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 public class PortForwardingBackendTimeoutException : Exception
 {

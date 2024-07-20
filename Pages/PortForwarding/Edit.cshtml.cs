@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
@@ -16,7 +17,7 @@ public class EditPortForwardingModel : PageModel
     [BindProperty(SupportsGet = true)]
     public string PortForwardingId { get; set; }
     [BindProperty] 
-    public PortForwardingForm Form { get; set; }
+    public PortForwardingDto Dto { get; set; }
     public async Task<ActionResult> OnGetAsync()
     {
         var portForwarding = await _portForwardingService.GetById(PortForwardingId);
@@ -24,7 +25,7 @@ public class EditPortForwardingModel : PageModel
         {
             return NotFound();
         }
-        Form = new PortForwardingForm(portForwarding);
+        Dto = new PortForwardingDto(portForwarding);
         return Page();
     }
     public async Task<IActionResult> OnPostAsync()
@@ -38,7 +39,7 @@ public class EditPortForwardingModel : PageModel
         {
             return NotFound();
         }
-        await _portForwardingService.EditPortForwarding(PortForwardingId, new PortForwardingData(Form));
+        await _portForwardingService.EditPortForwarding(PortForwardingId, new PortForwardingData(Dto));
         return RedirectToPage("/PortForwarding/Index");
     }
 }

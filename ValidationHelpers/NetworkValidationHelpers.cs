@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.NetworkInformation;
 using FluentValidation;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 namespace Rstolsmark.WakeOnLanServer.ValidationHelpers;
 

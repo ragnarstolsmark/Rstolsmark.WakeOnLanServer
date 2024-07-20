@@ -1,11 +1,11 @@
 using FluentValidation;
 using Rstolsmark.WakeOnLanServer.ValidationHelpers;
 
-namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
-public class PortForwardingFormValidator : AbstractValidator<PortForwardingForm>
+public class PortForwardingDtoValidator : AbstractValidator<PortForwardingDto>
 {
-    public PortForwardingFormValidator()
+    public PortForwardingDtoValidator()
     {
         RuleFor(p => p.Name)
             .NotEmpty();
