@@ -60,4 +60,23 @@ public class PortForwardingController : ControllerBase
                 .Select(p => new PortForwardingWithIdDto(p));
         return Ok(portForwardingResult);
     }
+    
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<IActionResult> GetById(string id){
+
+        if (!PortForwardingIsConfigured())
+        {
+            return NotFound();
+        }
+        if (!await UserIsAuthorizedForPortForwardingAccess())
+        {
+            return Forbid();
+        }
+        var portForwarding = await _portForwardingService.GetById(id);
+        if(portForwarding == null){
+            return NotFound();
+        }
+        return Ok(new PortForwardingWithIdDto(portForwarding));
+    }
 }
