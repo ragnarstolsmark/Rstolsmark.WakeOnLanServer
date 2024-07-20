@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 public class PortForwarding
 {

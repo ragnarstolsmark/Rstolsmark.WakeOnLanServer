@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
+namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding.Backends;
 
 public class MockPortForwardingService : IPortForwardingService
 {

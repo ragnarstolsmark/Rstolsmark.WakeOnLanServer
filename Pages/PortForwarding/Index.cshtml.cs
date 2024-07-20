@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
@@ -13,7 +14,7 @@ public class Index : PageModel
     {
         _portForwardingService = portForwardingService;
     }
-    public Dictionary<string, Model.PortForwarding> PortForwardings { get; set; }
+    public Dictionary<string, Services.PortForwarding.PortForwarding> PortForwardings { get; set; }
     public async Task OnGetAsync()
     {
         PortForwardings = await _portForwardingService.GetPortForwardingDictionary();
@@ -33,12 +34,12 @@ public class Index : PageModel
 
 public static class PortForwardingIndexExtensions
 {
-    public static string GetEnabledClass(this Model.PortForwarding portForwarding)
+    public static string GetEnabledClass(this Services.PortForwarding.PortForwarding portForwarding)
     {
         return portForwarding.Enabled ? "enabled" : string.Empty;
     }
 
-    public static string GetEnabledMessage(this Model.PortForwarding portForwarding)
+    public static string GetEnabledMessage(this Services.PortForwarding.PortForwarding portForwarding)
     {
         return portForwarding.Enabled ? "Enabled" : "Disabled";
     }

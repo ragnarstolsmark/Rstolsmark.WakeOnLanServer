@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding;
 
@@ -15,10 +16,10 @@ public class CreatePortForwardingModel : PageModel
     }
 
     [BindProperty]
-    public PortForwardingForm Form { get; set; }
+    public PortForwardingDto Dto { get; set; }
     public void OnGet(string destinationIp)
     {
-        Form = new PortForwardingForm
+        Dto = new PortForwardingDto
         {
             SourceIp = Request.HttpContext.Connection.RemoteIpAddress?.ToString(),
             DestinationIp = destinationIp
@@ -31,7 +32,7 @@ public class CreatePortForwardingModel : PageModel
         {
             return Page();
         }
-        await _portForwardingService.AddPortForwarding(new PortForwardingData(Form));
+        await _portForwardingService.AddPortForwarding(new PortForwardingData(Dto));
         return RedirectToPage("/PortForwarding/Index");
     }
 }

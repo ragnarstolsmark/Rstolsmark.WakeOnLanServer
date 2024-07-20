@@ -1,7 +1,7 @@
 using FluentValidation;
 using Microsoft.Extensions.Caching.Memory;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model.Backends;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
+using Rstolsmark.WakeOnLanServer.Services.PortForwarding.Backends;
 
 namespace Rstolsmark.WakeOnLanServer.Configuration.PortForwarding;
 
@@ -13,7 +13,7 @@ public static class PortForwardingConfiguration
         PortForwardingSettings portForwardingSettings;
         if (portForwardingConfiguration.Exists())
         {
-            builder.Services.AddSingleton<IValidator<PortForwardingForm>, PortForwardingFormValidator>();
+            builder.Services.AddSingleton<IValidator<PortForwardingDto>, PortForwardingDtoValidator>();
             portForwardingSettings = portForwardingConfiguration.Get<PortForwardingSettings>();
             switch (portForwardingSettings.Backend)
             {

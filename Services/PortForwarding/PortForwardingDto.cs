@@ -1,12 +1,12 @@
-namespace Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 
-public class PortForwardingForm
+public class PortForwardingDto
 {
-    public PortForwardingForm()
+    public PortForwardingDto()
     {
     }
 
-    public PortForwardingForm(PortForwarding portForwarding)
+    public PortForwardingDto(PortForwarding portForwarding)
     {
         Name = portForwarding.Name;
         Protocol = portForwarding.Protocol;
