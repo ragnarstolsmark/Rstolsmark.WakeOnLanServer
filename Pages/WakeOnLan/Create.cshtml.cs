@@ -9,12 +9,10 @@ namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 public class CreateModel : PageModel
 {
     private readonly ComputerService _computerService;
-    private readonly IValidator<Computer> _validator;
 
-    public CreateModel(ComputerService computerService, IValidator<Computer> validator)
+    public CreateModel(ComputerService computerService)
     {
         _computerService = computerService;
-        _validator = validator;
     }
 
     [BindProperty]
@@ -28,16 +26,10 @@ public class CreateModel : PageModel
     }
     public IActionResult OnPost()
     {
-        if (_computerService.DoesComputerExist(Computer.Name))
-        {
-            ModelState.AddModelError(nameof(Computer.Name), $"'{Computer.Name}' already exists.");
-        }
-        var validationResult = _validator.Validate(Computer);
+        var validator = new ComputerValidator(_computerService);
+        var validationResult = validator.Validate(Computer);
         if(!validationResult.IsValid){
             validationResult.AddToModelState(ModelState);
-        }
-        if (!ModelState.IsValid)
-        {
             return Page();
         }
         _computerService.AddComputer(Computer);
