@@ -7,11 +7,9 @@ namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 public class EditComputerModel : PageModel
 {
     private readonly ComputerService _computerService;
-    private readonly IValidator<Computer> _validator;
-    public EditComputerModel(ComputerService computerService, IValidator<Computer> validator)
+    public EditComputerModel(ComputerService computerService)
     {
         _computerService = computerService;
-        _validator = validator;
     }
 
     [BindProperty(SupportsGet = true)]
@@ -29,16 +27,10 @@ public class EditComputerModel : PageModel
     }
     public ActionResult OnPostAsync()
     {
-        if (ComputerName != Computer.Name && _computerService.DoesComputerExist(Computer.Name))
-        {
-            ModelState.AddModelError(nameof(Computer.Name), $"'{Computer.Name}' already exists.");
-        }
-        var validationResult = _validator.Validate(Computer);
+        var validator = new ComputerValidator(_computerService, ComputerName);
+        var validationResult = validator.Validate(Computer);
         if(!validationResult.IsValid){
             validationResult.AddToModelState(ModelState);
-        }
-        if (!ModelState.IsValid)
-        {
             return Page();
         }
         if (!_computerService.DoesComputerExist(ComputerName))
