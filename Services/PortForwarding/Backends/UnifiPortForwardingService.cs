@@ -103,12 +103,14 @@ public class UnifiPortForwardingService : IPortForwardingService
         return null;
     }
     
-    public async Task AddPortForwarding(PortForwardingData portForwardingData)
+    public async Task<PortForwarding> AddPortForwarding(PortForwardingData portForwardingData)
     {
         var unifiPortForwardingForm = MapWakeOnLanServerPortForwardingDataToUnifiPortForwardingData(portForwardingData);
         unifiPortForwardingForm.Enabled = true;
-        await _unifiClient.CreatePortForwardSetting(unifiPortForwardingForm)
+        var unifiPortForward = await _unifiClient
+            .CreatePortForwardSetting(unifiPortForwardingForm)
             .WithTimeoutHandling();
+        return MapUnifiPortForwardingToWakeOnLanServerPortForwarding(unifiPortForward);
     }
     public async Task EditPortForwarding(string id, PortForwardingData portForwardingData)
     {

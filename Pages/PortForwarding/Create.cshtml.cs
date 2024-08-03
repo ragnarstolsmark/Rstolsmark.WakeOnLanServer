@@ -38,7 +38,7 @@ public class CreatePortForwardingModel : PageModel
             validationResult.AddToModelState(ModelState);
             return Page();
         }
-        await _portForwardingService.AddPortForwarding(new PortForwardingData(Dto));
+        var _ = await _portForwardingService.AddPortForwarding(new PortForwardingData(Dto));
         return RedirectToPage("/PortForwarding/Index");
     }
 }

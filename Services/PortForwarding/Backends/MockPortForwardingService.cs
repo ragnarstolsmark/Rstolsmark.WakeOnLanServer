@@ -77,10 +77,10 @@ public class MockPortForwardingService : IPortForwardingService
         return Task.CompletedTask;
     }
 
-    Task IPortForwardingService.AddPortForwarding(PortForwardingData portForwardingData)
+    Task<PortForwarding> IPortForwardingService.AddPortForwarding(PortForwardingData portForwardingData)
     {
-        AddPortForwarding(portForwardingData);
-        return Task.CompletedTask;
+        var portForwarding = AddPortForwarding(portForwardingData);
+        return Task.FromResult(portForwarding);
     }
 
     public Task<PortForwarding> GetById(string id)
