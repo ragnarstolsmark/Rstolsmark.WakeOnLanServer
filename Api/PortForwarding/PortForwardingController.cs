@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Rstolsmark.WakeOnLanServer.Configuration;
 using Rstolsmark.WakeOnLanServer.Services.PortForwarding;
 using Rstolsmark.WakeOnLanServer.Api.Errors;
+using FluentValidation;
+using Rstolsmark.WakeOnLanServer.ValidationHelpers;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace Rstolsmark.WakeOnLanServer.Api.PortForwarding;
 #nullable enable
@@ -15,16 +18,22 @@ public class PortForwardingController : ControllerBase
 {
     private readonly IAuthorizationService _authorizationService;
     private readonly IAuthorizationPolicyProvider _authorizationPolicyProvider;
+    private readonly ProblemDetailsFactory _problemDetailsFactory;
     private readonly IPortForwardingService? _portForwardingService;
+    private readonly IValidator<PortForwardingDto>? _validator;
 
     public PortForwardingController(
         IAuthorizationService authorizationService, 
         IAuthorizationPolicyProvider authorizationPolicyProvider,
-        IPortForwardingService? portForwardingService = null)
+        ProblemDetailsFactory problemDetailsFactory,
+        IPortForwardingService? portForwardingService = null,
+        IValidator<PortForwardingDto>? validator = null)
     {
         _authorizationService = authorizationService;
         _authorizationPolicyProvider = authorizationPolicyProvider;
+        _problemDetailsFactory = problemDetailsFactory;
         _portForwardingService = portForwardingService;
+        _validator = validator;
     }
 
     private async Task<bool> UserIsAuthorizedForPortForwardingAccess()
@@ -39,7 +48,7 @@ public class PortForwardingController : ControllerBase
         return true;
     }
     
-    [MemberNotNullWhen(true, nameof(_portForwardingService))]
+    [MemberNotNullWhen(true, nameof(_portForwardingService), nameof(_validator))]
     private bool PortForwardingIsConfigured() => _portForwardingService is not null;
     
     [HttpGet]
@@ -138,5 +147,31 @@ public class PortForwardingController : ControllerBase
         }
         await _portForwardingService.Disable(id);
         return Ok();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddPortForwarding(PortForwardingDto portForwarding){
+        if (!PortForwardingIsConfigured())
+        {
+            return NotFound();
+        }
+        if (!await UserIsAuthorizedForPortForwardingAccess())
+        {
+            return Forbid();
+        }
+        var validationResult = _validator.Validate(portForwarding);
+        if(!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
+            var validationProblemDetails = _problemDetailsFactory.CreateValidationProblemDetails(Request.HttpContext, ModelState);
+            return BadRequest(validationProblemDetails);
+        }
+        var createdPortForwarding = await _portForwardingService.AddPortForwarding(new PortForwardingData(portForwarding));
+        return CreatedAtAction
+        (
+            nameof(GetById),
+            new { createdPortForwarding.Id },
+            new PortForwardingWithIdAndEnabledDto(createdPortForwarding)
+        );
     }
 }
