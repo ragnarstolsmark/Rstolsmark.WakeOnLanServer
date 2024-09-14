@@ -174,4 +174,35 @@ public class PortForwardingController : ControllerBase
             new PortForwardingWithIdAndEnabledDto(createdPortForwarding)
         );
     }
+    
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<IActionResult> EditPortForwarding(string id, PortForwardingDto portForwarding){
+        if (!PortForwardingIsConfigured())
+        {
+            return NotFound();
+        }
+        
+        if (!await UserIsAuthorizedForPortForwardingAccess())
+        {
+            return Forbid();
+        }
+        
+        var existingPortForwarding = await _portForwardingService.GetById(id);
+        if (existingPortForwarding == null){
+            return NotFound();
+        }
+
+        var validationResult = _validator.Validate(portForwarding);
+        if (!validationResult.IsValid)
+        {
+            validationResult.AddToModelState(ModelState);
+            var validationProblemDetails = _problemDetailsFactory.CreateValidationProblemDetails(Request.HttpContext, ModelState);
+            return BadRequest(validationProblemDetails);
+        }
+        
+        await _portForwardingService.EditPortForwarding(id, new PortForwardingData(portForwarding));
+
+        return Ok();
+    }
 }
