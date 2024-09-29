@@ -7,3 +7,4 @@ out/
 *.DotSettings.user
 logs/
 Rstolsmark.WakeOnLanServer.zip
+Get-AccessToken.psm1
