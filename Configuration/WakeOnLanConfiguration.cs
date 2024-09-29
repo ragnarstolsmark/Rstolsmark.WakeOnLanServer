@@ -1,5 +1,4 @@
-using FluentValidation;
-using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+using Rstolsmark.WakeOnLanServer.Services.WakeOnLan;
 
 namespace Rstolsmark.WakeOnLanServer.Configuration;
 

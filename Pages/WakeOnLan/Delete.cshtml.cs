@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+using Rstolsmark.WakeOnLanServer.Services.WakeOnLan;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 

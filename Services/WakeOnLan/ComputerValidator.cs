@@ -2,7 +2,7 @@ using FluentValidation;
 using Rstolsmark.WakeOnLanServer.ValidationHelpers;
 #nullable enable
 
-namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.WakeOnLan;
 
 public class ComputerValidator : AbstractValidator<Computer>
 {
@@ -10,9 +10,10 @@ public class ComputerValidator : AbstractValidator<Computer>
     {
         RuleFor(c => c.Name)
             .NotEmpty()
-            .Must(name => 
+            .Must(name =>
             {
-                if(previousName == name){
+                if (previousName == name)
+                {
                     return true;
                 }
                 return !computerService.DoesComputerExist(name);

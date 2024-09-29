@@ -2,27 +2,36 @@ using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
-namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+namespace Rstolsmark.WakeOnLanServer.Services.WakeOnLan;
 
 public class Computer
 {
-    private bool _woken;
+    public Computer()
+    {
+    }
+    public Computer(Computer computer)
+    {
+        Name = computer.Name;
+        IP = computer.IP;
+        MAC = computer.MAC;
+        SubnetMask = computer.SubnetMask;
+    }
+
     public string Name { get; set; }
     public string IP { get; set; }
     public string MAC { get; set; }
     public string SubnetMask { get; set; }
-    
-    public bool IsWoken()
-    {
-        return _woken;
-    }
 
-    public async Task Ping()
+    /// <summary>
+    /// Ping the computer
+    /// </summary>
+    /// <returns>A bool indicating if the ping succeeded and therefore the computer should be considered awake</returns>
+    public async Task<bool> Ping()
     {
         Ping pingSender = new Ping();
         //Send with a low timeout since it is on LAN and to prevent slow page load if computers are offline
         PingReply reply = await pingSender.SendPingAsync(IP, 50);
-        _woken = reply.Status == IPStatus.Success;
+        return reply.Status == IPStatus.Success;
     }
     
     private IPAddress GetBroadcastAddress()
