@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Rstolsmark.WakeOnLanServer.Pages.WakeOnLan.Model;
+using Rstolsmark.WakeOnLanServer.Services.WakeOnLan;
 
 namespace Rstolsmark.WakeOnLanServer.Pages.WakeOnLan;
 
@@ -12,16 +12,10 @@ public class IndexModel : PageModel
         _computerService = computerService;
     }
 
-    public Computer[] Computers { get; set; }
+    public ComputerWithAwakeDto[] Computers { get; set; }
     public async Task OnGetAsync()
     {
-        Computers = _computerService.GetAllComputers();
-        await PingAllComputers();
-    }
-
-    private Task PingAllComputers()
-    {
-        return Task.WhenAll(Computers.Select(c => c.Ping()));
+        Computers = await _computerService.GetAllComputersWithAwakeStatus();
     }
 
     public IActionResult OnPost(string computerToWake)
@@ -35,13 +29,13 @@ public class IndexModel : PageModel
 
 public static class WakeOnLanIndexExtensions
 {
-    public static string GetAwakeClass(this Computer computer)
+    public static string GetAwakeClass(this ComputerWithAwakeDto computer)
     {
-        return computer.IsWoken() ? "enabled" : string.Empty;
+        return computer.Awake ? "enabled" : string.Empty;
     }
 
-    public static string GetAwakeMessage(this Computer computer)
+    public static string GetAwakeMessage(this ComputerWithAwakeDto computer)
     {
-        return computer.IsWoken() ? "Awake" : "Sleeping";
+        return computer.Awake ? "Awake" : "Sleeping";
     }
 }
