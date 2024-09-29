@@ -1,6 +1,5 @@
 using System.Net;
 using Rstolsmark.UnifiClient;
-using Rstolsmark.WakeOnLanServer.Pages.PortForwarding.Model;
 using UnifiPortForwarding = Rstolsmark.UnifiClient.PortForward;
 using UnifiPortForwardingData = Rstolsmark.UnifiClient.PortForwardForm;
 namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding.Backends;
