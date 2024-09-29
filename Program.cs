@@ -24,21 +24,17 @@ try
     {
         policyRoles = [];
     }
-
-    builder.ConfigureWebApi();
+    var enableApi = builder.Configuration.GetValue<bool>("EnableApi");
+    if (enableApi)
+    {
+        builder.ConfigureWebApi();
+    }
     var mvcBuilder = builder.ConfigureRazorPages(policyRoles);
     if (azureAdConfiguration.Exists())
     {
         builder.AddAzureAdAuthentication(mvcBuilder, azureAdConfiguration);
     }
     builder.Services.AddSession();
-    builder.Services.AddProblemDetails(options =>
-    {
-        options.CustomizeProblemDetails = context =>
-        {
-            context.ProblemDetails.Extensions["requestId"] = context.HttpContext.TraceIdentifier;
-        };
-    });
     var app = builder.Build();
     var basedir = app.Environment.ContentRootPath;
     AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(basedir, "data"));
@@ -65,7 +61,10 @@ try
     app.UseSession();
     app.UseStatusCodePagesWithReExecute("/Errors/{0}");
     app.MapRazorPages();
-    app.MapControllers();
+    if (enableApi)
+    {
+        app.MapControllers();
+    }
     app.Run();
     Log.Information("Stopped cleanly");
     return 0;
