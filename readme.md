@@ -12,7 +12,7 @@ Download the zip file from the release tab.
 
 ### Hosting on IIS
 
-Unzip the contents into a website. Ensure that the dotnet hosting runtime 6 is installed.
+Unzip the contents into a website. Ensure that the dotnet hosting runtime 8 is installed.
 
 ### Hosting on Kestrel
 
