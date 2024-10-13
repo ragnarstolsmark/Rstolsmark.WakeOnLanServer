@@ -7,7 +7,7 @@ function Get-AccessToken
     [string] $ClientID,
 
     [Parameter(Mandatory=$true)]
-    [string] $ClientSecret,
+    [securestring] $ClientSecret,
     
     [Parameter(Mandatory=$true)]
     [string] $ServerApplicationID
@@ -17,9 +17,57 @@ function Get-AccessToken
     $form = @{                                                                
         client_id = $ClientID
         scope = "api://$ServerApplicationID/.default"
-        client_secret = $ClientSecret
+        client_secret = ConvertFrom-SecureString $ClientSecret -AsPlainText
         grant_type = "client_credentials"
     }
     $result = Invoke-RestMethod -Uri $uri -Method Post -Form $form
-    return $result.access_token
+    return ConvertTo-SecureString $result.access_token -AsPlainText
+}
+
+function Get-Computer
+(
+    [Parameter(Mandatory=$true)]
+    [string] $Url,
+
+    [Parameter(Mandatory=$true)]
+    [securestring] $AccessToken,
+
+    [string] $Name,
+
+    [switch] $SkipCertificateCheck
+)
+{
+    $uri = "$Url/api/wakeonlan/$Name";
+    return Invoke-RestMethod `
+        -Uri $uri `
+        -SkipCertificateCheck:$SkipCertificateCheck `
+        -Token $AccessToken `
+        -Authentication Bearer
+}
+
+function Set-Computer
+(
+    [Parameter(Mandatory=$true)]
+    [string] $Url,
+
+    [Parameter(Mandatory=$true)]
+    [securestring] $AccessToken,
+
+    [Parameter(Mandatory=$true)]
+    [string] $Name,
+
+    [Parameter (Mandatory=$true, ValueFromPipeline)]
+    [pscustomobject] $Computer,
+
+    [switch] $SkipCertificateCheck
+)
+{
+    $uri = "$Url/api/wakeonlan/$Name";
+    return $Computer | ConvertTo-Json | Invoke-RestMethod `
+        -Method PUT `
+        -Uri $uri `
+        -ContentType "application/json" `
+        -SkipCertificateCheck:$SkipCertificateCheck `
+        -Token $AccessToken `
+        -Authentication Bearer
 }
