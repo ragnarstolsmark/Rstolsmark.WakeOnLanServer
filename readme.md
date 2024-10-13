@@ -26,7 +26,6 @@ Unzip the contents into a website. Ensure that the dotnet hosting runtime 8 is i
   ```
 
 ## Configuration
-
 ### Adding a configuration file for production
 
 1. Add `appsettings.Production.json` to the root of the site
@@ -286,3 +285,67 @@ the name of the secret needs to contain `--` between each hierarchy level.
 
 Here is an example of a name that sets the Unifi password:  
 `PortForwarding--UnifiClientOptions--Credentials--Password`
+
+## API
+
+The WakeOnLanServer ships with an API. It is disabled by default.
+
+### Enabling API
+
+To enable the API add the following to `appsettings.Production.json`
+
+```json
+{
+   "EnableApi": true"
+}
+```
+
+### Authentication and authorization
+
+The API uses the same authentication and authorization scheme as the rest of the application.
+
+#### Azure AD setup
+
+##### Server app registration
+
+The server app registration created as part of the normal Azure AD authentication setup must expose an API.
+
+1. Go to the app registration page.
+1. If it shows an Application ID URI, you are all set. If not you must add an application ID URI:
+1. Click "Add an Application ID URI".
+1. On the new page click "Add"
+1. Accept the standard URI of "api://{Your Application ID}"
+
+
+##### Client app registration
+
+To be able to obtain an access token for the API you must first register a client application (app registration). This app registration is different from the one used by the app it self. It can be considered as the "user" identifying the client calling the API. 
+
+1. Create an app registration in Azure.
+1. Under certificates and secrets add a certificate or client secret based on how you want your client to authenticate.
+
+##### Role-based authorization
+
+If you use role-based authorization for your WakeOnLanServer you will need to add your client app registration to the roles in your server app registration. You will be able to do this in Azure just like you would a normal user.
+
+#### Azure AD example
+
+This example illustrates how to obtain an access token and call the API using Azure AD with a client secret.
+
+Send a POST request to `https://login.microsoftonline.com/{tenantid}/oauth2/v2.0/token` where you replace `{tenantid}` with the ID of your Azure AD tenant. The content-type should be `application/x-www-form-urlencoded`. The form should contain the following values:
+
+- `client_id` The Application ID of your client app registration
+- `scope` Your server's app registration application ID URI postfixed with `/.default`. E. g.: `api://c21f21d8-5f8a-472c-90e1-25f0453e1754/.default`
+- `client_secret` Your client secret.
+- `grant_type` `client_credentials`
+
+The token you receive from Azure AD needs to be sent as a bearer token in the Authorization header with api requests to the WakeOnLanServer:
+
+`Authorization: Bearer <Token>`
+
+## Powershell module
+As an example of how to use the API from PowerShell the `wakeonlan.psm1` module contains a few important functions:
+
+The function `Get-AccessToken` inside `wakeonlan.psm1` gets an access token.
+
+The functions `Get-Computer` and `Set-Computer` inside `wakeonlan.psm1` shows how to do a GET and a PUT.
