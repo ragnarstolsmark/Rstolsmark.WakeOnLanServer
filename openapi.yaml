@@ -1,0 +1,459 @@
+openapi: "3.0.3"
+info:
+  title: WakeOnLanServer API
+  version: "1.0"
+servers:
+  - url: https://localhost:5001/api
+    description: Url used for development.
+paths:
+  /wakeonlan:
+    get:
+      description: Returns a list of computers with their awake status.
+      responses:
+        "200":
+          description: A JSON array of computers with awake status.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ComputerWithAwakeStatus"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+    post:
+      description: Adds a computer to the WakeOnLan server.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Computer"
+      responses:
+        "201":
+          description: A computer was created.
+          headers:
+            "Location":
+              schema: 
+                type: string
+              description: The URL to get the new computer.
+        "400":
+          description: A validation error occured.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+  /wakeonlan/{name}:
+    get:
+      description: Returns a computer with awake status.
+      parameters:
+        - name: name
+          description: The name of the computer.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Living room computer
+      responses:
+        "200":
+          description: A computer with awake status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ComputerWithAwakeStatus"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+        "404":
+          description: Not found, no computer with that name exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    put:
+      description: Updates a computer.
+      parameters:
+        - name: name
+          description: The name of the computer.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Living room computer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Computer"
+      responses:
+        "200":
+          description: The computer was updated.
+        "400":
+          description: A validation error occured.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+    delete:
+      description: Deletes a computer.
+      parameters:
+        - name: name
+          description: The name of the computer.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Living room computer
+      responses:
+        "200":
+          description: Computer deleted.
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+        "404":
+          description: Not found, no computer with that name exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /wakeonlan/{name}/wakeup:
+    post:
+      description: Wakes up a computer.
+      parameters:
+        - name: name
+          description: The name of the computer.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: Living room computer
+      responses:
+        "200":
+          description: Computer was sent a magic wake up packet.
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in wake on lan role.
+        "404":
+          description: Not found, no computer with that name exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /portforwarding:
+    get:
+      description: Returns a list of port forwarding configurations with their enabled status.
+      responses:
+        "200":
+          description: A JSON array of port forwarding configurations with enabled status.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PortForwardingConfigurationWithIdAndEnabledStatus"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+    post:
+      description: Adds a port forwarding configuration to the WakeOnLan server.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortForwardingConfiguration"
+      responses:
+        "201":
+          description: A port forwarding configuration was created.
+          headers:
+            "Location":
+              schema: 
+                type: string
+              description: The URL to get the new port forwarding configuration.
+        "400":
+          description: A validation error occured.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+  /portforwarding/{id}:
+    get:
+      description: Returns a port forwarding configuration with enabled status.
+      parameters:
+        - name: id
+          description: The id of the port forwarding configuration.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "5"
+      responses:
+        "200":
+          description: A port forwarding configuration with enabled status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PortForwardingConfigurationWithIdAndEnabledStatus"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+        "404":
+          description: Not found, no port forwarding configuration with that id exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+    put:
+      description: Updates a port forwarding configuration.
+      parameters:
+        - name: id
+          description: The id of the port forwarding configuration.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "5"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PortForwardingConfiguration"
+      responses:
+        "200":
+          description: The port forwarding configuration was updated.
+        "400":
+          description: A validation error occured.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidationError"
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+    delete:
+      description: Deletes a port forwarding configuration.
+      parameters:
+        - name: id
+          description: The id of the port forwarding configuration.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "5"
+      responses:
+        "200":
+          description: Port forwarding configuration deleted.
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+        "404":
+          description: Not found, no port forwarding configuration with that id exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /portforwarding/{id}/enable:
+    post:
+      description: Enables a port forwarding configuration.
+      parameters:
+        - name: id
+          description: The id of the port forwarding configuration.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "5"
+      responses:
+        "200":
+          description: The port forwarding configuration was enabled.
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+        "404":
+          description: Not found, no port forwarding configuration with that id exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+  /portforwarding/{id}/disable:
+    post:
+      description: Disables a port forwarding configuration.
+      parameters:
+        - name: id
+          description: The id of the port forwarding configuration.
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "5"
+      responses:
+        "200":
+          description: The port forwarding configuration was disabled.
+        "401":
+          description: Unauthorized, invalid credentials.
+        "403":
+          description: Forbidden, client not in port forwarding role.
+        "404":
+          description: Not found, no port forwarding configuration with that id exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Computer:
+      type: object
+      description: A computer covered by the WakeOnLan server.
+      required:
+        - name
+        - ip
+        - mac
+        - subnetMask
+      properties:
+        name:
+          type: string
+          example: Living room computer
+        ip:
+          type: string
+          example: "192.168.5.16"
+        mac:
+          type: string
+          example: "00:00:5E:00:53:AF"
+        subnetMask:
+          type: string
+          example: "255.255.255.0"
+    ComputerWithAwakeStatus:
+      description: A computer covered by the WakeOnLan server with awake status.
+      allOf:
+        - $ref: "#/components/schemas/Computer"
+        - type: object
+        - properties:
+            awake:
+              type: boolean
+    PortForwardingConfiguration:
+      type: object
+      description: A port forwarding configuration.
+      required:
+        - name
+        - protocol
+        - destinationIp
+        - destinationPort
+      properties:
+        name:
+          type: string
+          example: Living room computer
+        protocol:
+          type: string
+          enum:
+            - TCP
+            - UDP
+            - Any
+          example: TCP
+        sourceIp:
+          type: string
+          example: "92.221.121.30"
+        sourcePort:
+          type: integer
+          example: 80
+        destinationIp:
+          type: string
+          example: "192.168.5.16"
+        destinationPort:
+          type: integer
+          example: 80  
+    PortForwardingConfigurationWithIdAndEnabledStatus:
+      description: A port forwarding configuration with id and enabled status.
+      allOf:
+        - $ref: "#/components/schemas/PortForwardingConfiguration"
+        - type: object
+        - properties:
+            id:
+              type: string
+              example: "15"
+            enabled:
+              type: boolean
+    NotFound:
+      description: The resource was not found.
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc9110#section-15.5.5
+        title:
+          type: string
+          example: Not Found
+        status:
+          type: integer
+          example: 404
+        traceId:
+          type: string
+          example: 00-ab6dac2277c7a2f40b7bfc90b7735eab-6a5f886343123f16-00
+          description: Used for tracing errors on the server in log files.
+        requestId:
+          type: string
+          example: 0HN7LG73ITA0C:00000001
+          description: Used for locating the request in log files.
+    ValidationError:
+      description: One or more validation errors occured.
+      type: object
+      properties:
+        type:
+          type: string
+          example: https://tools.ietf.org/html/rfc9110#section-15.5.1
+        title:
+          type: string
+          example: One or more validation errors occurred.
+        status:
+          type: integer
+          example: 400
+        traceId:
+          type: string
+          example: 00-ab6dac2277c7a2f40b7bfc90b7735eab-6a5f886343123f16-00
+          description: Used for tracing errors on the server in log files.
+        requestId:
+          type: string
+          example: 0HN7LG73ITA0C:00000001
+          description: Used for locating the request in log files.
+        errors:
+          type: object
+          example: 
+            IP:
+              - "'Karl' is not a valid IP."
+            MAC:
+              - "'blad' is not a valid MAC."
+          additionalProperties:
+            description: An object where the keys are the properties that contain validation errors, the values are arrays of strings with one item per error.
+            type: array
+            items:
+              type: string
+              example: "'blad' is not a valid MAC."
+security:
+  - bearerAuth: []

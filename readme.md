@@ -349,3 +349,6 @@ As an example of how to use the API from PowerShell the `wakeonlan.psm1` module 
 The function `Get-AccessToken` inside `wakeonlan.psm1` gets an access token.
 
 The functions `Get-Computer` and `Set-Computer` inside `wakeonlan.psm1` shows how to do a GET and a PUT.
+
+## OpenAPI Specification
+The OpenAPI specification of the WakeOnLanServer API is defined in openapi.yaml.
