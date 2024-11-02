@@ -1,19 +1,17 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR ./app
 COPY *.csproj ./
-RUN dotnet restore -r linux-musl-x64
+RUN dotnet restore
 
 # copy everything else and build app
 COPY / ./
-RUN dotnet publish -c Release -o out --self-contained -r linux-musl-x64 --no-restore
+RUN dotnet publish -c Release -o out --no-restore
 
-FROM alpine:3.15 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+WORKDIR /app
 COPY --from=build /app/out ./
-RUN apk add libstdc++ libgcc libintl openssl && \
-    chmod +x Rstolsmark.WakeOnLanServer
 VOLUME /data
-EXPOSE 80
-ENTRYPOINT ["./Rstolsmark.WakeOnLanServer", "--urls", "http://*:80"]
+ENTRYPOINT ["dotnet", "Rstolsmark.WakeOnLanServer.dll"]
 # Run with:
 # docker run -d \
 # -p 80:80 \
