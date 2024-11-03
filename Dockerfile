@@ -11,19 +11,19 @@ RUN dotnet publish -c Release -p:Version=$VERSION -o out --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
-VOLUME /data
+VOLUME /app/data
 ENTRYPOINT ["dotnet", "Rstolsmark.WakeOnLanServer.dll"]
 # Run with:
 # docker run -d \
-# -p 80:80 \
-# -e ASPNETCORE_PasswordAuthenticationOptions__HashedPassword=AQAAAAEAACcQAAAAEKf2sSufN9V6t+tENnq9sAE/IOhmb1PQzTAOdLXcUj3PPJuVkx6Ku/2De4jb1NCdeA== \
-# -e ASPNETCORE_PasswordAuthenticationOptions__Realm="Wake me up" \
+# -p 80:8080 \
+# -e PasswordAuthenticationOptions__HashedPassword=AQAAAAEAACcQAAAAEKf2sSufN9V6t+tENnq9sAE/IOhmb1PQzTAOdLXcUj3PPJuVkx6Ku/2De4jb1NCdeA== \
+# -e PasswordAuthenticationOptions__Realm="Wake me up" \
 # --name wakeonlanserver \
-# --mount source=wakeonlanserver,target=/data \
+# --mount source=wakeonlanserver,target=/app/data \
 # rstolsmark/wakeonlanserver
 #
 # Backup (backup is stored as backup.tar in current directory)
-# docker run --rm --volumes-from wakeonlanserver -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /data
+# docker run --rm --volumes-from wakeonlanserver -v $(pwd):/backup ubuntu tar cvf /backup/backup.tar /app/data
 #
 # Restore (assume backup.tar is stored in current directory)
-# docker run --rm --volumes-from wakeonlanserver -v $(pwd):/backup ubuntu bash -c "cd /data && tar xvf /backup/backup.tar --strip 1"
+# docker run --rm --volumes-from wakeonlanserver -v $(pwd):/backup ubuntu bash -c "cd /app/data && tar xvf /backup/backup.tar --strip 1"
