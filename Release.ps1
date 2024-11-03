@@ -1,5 +1,6 @@
 param(
-[string] $version
+    [Parameter(Mandatory=$true)]
+    [string] $version
 )
 $releaseDate = Get-Date -Format "yyyy-MM-dd"
 (Get-Content changelog.md).Replace("## [Unreleased]", "## [$version] - $releaseDate") | Set-Content changelog.md
