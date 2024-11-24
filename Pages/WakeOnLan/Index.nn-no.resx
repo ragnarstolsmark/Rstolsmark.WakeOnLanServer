@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="Wake on LAN status" xml:space="preserve">
+        <value>Wake on LAN status</value>
+    </data>
+    <data name="IP" xml:space="preserve">
+        <value>IP</value>
+    </data>
+    <data name="MAC" xml:space="preserve">
+        <value>MAC</value>
+    </data>
+    <data name="Subnet mask" xml:space="preserve">
+        <value>Subnet maske</value>
+    </data>
+    <data name="Wake up" xml:space="preserve">
+        <value>Slå på</value>
+    </data>
+    <data name="Edit" xml:space="preserve">
+        <value>Rediger</value>
+    </data>
+    <data name="Delete" xml:space="preserve">
+        <value>Slett</value>
+    </data>
+    <data name="Forward port" xml:space="preserve">
+        <value>Vidaresend port</value>
+    </data>
+    <data name="No computers added. Add a computer" xml:space="preserve">
+        <value>Ingen datamaskinar. Legg til ein datamaskin</value>
+    </data>
+    <data name="here" xml:space="preserve">
+        <value>her</value>
+    </data>
+    <data name="Awake" xml:space="preserve">
+        <value>På</value>
+    </data>
+    <data name="Sleeping" xml:space="preserve">
+        <value>Av</value>
+    </data>
+</root>

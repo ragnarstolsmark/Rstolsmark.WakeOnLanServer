@@ -2,30 +2,30 @@
 @model IndexModel
 @using Rstolsmark.WakeOnLanServer.Configuration.PortForwarding
 @inject PortForwardingSettings _portForwardingSettings
-<h1>Wake on LAN status</h1>
+<h1>@Localizer["Wake on LAN status"]</h1>
 <div class="main-grid" if="Model.Computers.Any()">
     @foreach (var computer in Model.Computers)
     {
         <div class="main-grid-item">
-            <h4 class="main-grid-item-name @computer.GetAwakeClass()">@computer.Name (@computer.GetAwakeMessage())</h4>
+            <h4 class="main-grid-item-name @computer.GetAwakeClass()">@computer.Name (@Localizer[computer.GetAwakeMessage()])</h4>
             <div class="main-grid-item-content">
                 <div class="main-grid-item-properties">
-                    <div class="main-grid-item-property-name">IP</div>
+                    <div class="main-grid-item-property-name">@Localizer["IP"]</div>
                     <div class="main-grid-item-property-value">@computer.IP</div>
-                    <div class="main-grid-item-property-name">MAC</div>
+                    <div class="main-grid-item-property-name">@Localizer["MAC"]</div>
                     <div class="main-grid-item-property-value">@computer.MAC</div>
-                    <div class="main-grid-item-property-name">Subnet mask</div>
+                    <div class="main-grid-item-property-name">@Localizer["Subnet mask"]</div>
                     <div class="main-grid-item-property-value">@computer.SubnetMask</div>
                 </div>
                 <div class="main-grid-item-actions">
                     <form method="post" if="!computer.Awake" asp-route-computerToWake="@computer.Name">
-                        <button>Wake up</button>
+                        <button>@Localizer["Wake up"]</button>
                     </form>
-                    <a asp-page="/WakeOnLan/Edit" asp-route-ComputerName="@computer.Name">Edit</a>
-                    <a asp-page="/WakeOnLan/Delete" asp-route-ComputerName="@computer.Name">Delete</a>
+                    <a asp-page="/WakeOnLan/Edit" asp-route-ComputerName="@computer.Name">@Localizer["Edit"]</a>
+                    <a asp-page="/WakeOnLan/Delete" asp-route-ComputerName="@computer.Name">@Localizer["Delete"]</a>
                     @if(_portForwardingSettings.Backend != PortForwardingBackend.None)
                     {
-                        <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">Forward port</a>
+                        <a asp-page="/PortForwarding/Create" asp-route-destinationIp="@computer.IP">@Localizer["Forward port"]</a>
                     }
                 </div>
             </div>
@@ -33,5 +33,5 @@
     }
 </div>
 <p if="!Model.Computers.Any()">
-    No computers added. Add a computer <a asp-page="/WakeOnLan/Create">here</a>.
+    @Localizer["No computers added. Add a computer"] <a asp-page="/WakeOnLan/Create">@Localizer["here"]</a>.
 </p>
