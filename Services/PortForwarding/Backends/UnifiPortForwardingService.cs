@@ -61,7 +61,7 @@ public class UnifiPortForwardingService : IPortForwardingService
         {
             return false;
         }
-        if (!string.IsNullOrEmpty(_wanIp) && !string.IsNullOrEmpty(unifiPortForward.DestinationIp) && unifiPortForward.DestinationIp != _wanIp)
+        if (!string.IsNullOrEmpty(_wanIp) && unifiPortForward.DestinationIp != _wanIp)
         {
             return false;
         }
