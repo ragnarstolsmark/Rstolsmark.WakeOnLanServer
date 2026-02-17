@@ -4,7 +4,7 @@ Asp.Net Http server to enable wake on lan for computers behind a firewall. It al
 
 ## Requirements
 
- - .NET 8 runtime
+ - .NET 10 runtime
 
 ## Usage
 
@@ -12,7 +12,7 @@ Download the zip file from the release tab.
 
 ### Hosting on IIS
 
-Unzip the contents into a website. Ensure that the dotnet hosting runtime 8 is installed.
+Unzip the contents into a website. Ensure that the dotnet hosting runtime 10 is installed.
 
 ### Hosting on Kestrel
 
