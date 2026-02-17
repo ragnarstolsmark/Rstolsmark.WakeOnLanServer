@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG VERSION
 WORKDIR /app
 COPY *.csproj ./
@@ -8,7 +8,7 @@ RUN dotnet restore
 COPY / ./
 RUN dotnet publish Rstolsmark.WakeOnLanServer.csproj -c Release -p:Version=$VERSION -o out --no-restore
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/out ./
 VOLUME /app/data
