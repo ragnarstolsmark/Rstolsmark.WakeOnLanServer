@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
+- Added support for configuring Unifi port forwardings with WAN
+- Updated to .NET 10
 - Updated Azure.Extensions.AspNetCore.Configuration.Secrets from 1.3.1 to 1.4.0
 - Updated Azure.Identity from 1.12.0 to 1.17.1
 - Updated FluentValidation from 11.9.2 to 12.1.1
