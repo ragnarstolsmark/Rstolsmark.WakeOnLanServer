@@ -7,10 +7,12 @@ namespace Rstolsmark.WakeOnLanServer.Services.PortForwarding.Backends;
 public class UnifiPortForwardingService : IPortForwardingService
 {
     private readonly UnifiClient.UnifiClient _unifiClient;
+    private readonly string _wanIp;
 
-    public UnifiPortForwardingService(UnifiClient.UnifiClient unifiClient)
+    public UnifiPortForwardingService(UnifiClient.UnifiClient unifiClient, string wanIp = null)
     {
         _unifiClient = unifiClient;
+        _wanIp = wanIp;
     }
 
     public async Task<IEnumerable<PortForwarding>> GetAll()
@@ -79,7 +81,7 @@ public class UnifiPortForwardingService : IPortForwardingService
 
     private UnifiPortForwardingData MapWakeOnLanServerPortForwardingDataToUnifiPortForwardingData(PortForwardingData portForwardingData)
     {
-        return new UnifiPortForwardingData
+        var unifiData = new UnifiPortForwardingData
         {
             Name = portForwardingData.Name,
             Protocol = portForwardingData.Protocol == Protocol.Any ? "tcp_udp" : portForwardingData.Protocol.ToString().ToLower(),
@@ -88,6 +90,13 @@ public class UnifiPortForwardingService : IPortForwardingService
             Forward = portForwardingData.DestinationIp.ToString(),
             DestinationPort = portForwardingData.SourcePort.ToString()
         };
+        
+        if (!string.IsNullOrEmpty(_wanIp))
+        {
+            unifiData.DestinationIp = _wanIp;
+        }
+        
+        return unifiData;
     }
 
     public async Task<PortForwarding> GetById(string id)

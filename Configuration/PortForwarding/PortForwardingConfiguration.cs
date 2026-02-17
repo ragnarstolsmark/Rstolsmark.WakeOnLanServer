@@ -27,7 +27,7 @@ public static class PortForwardingConfiguration
                     }
                     var unifiCache = new MemoryCache(new MemoryCacheOptions());
                     var unifiClient = new UnifiClient.UnifiClient(unifiCache, portForwardingSettings.UnifiClientOptions);
-                    var unifiPortForwardingService = new UnifiPortForwardingService(unifiClient);
+                    var unifiPortForwardingService = new UnifiPortForwardingService(unifiClient, portForwardingSettings.UnifiClientOptions.WanIp);
                     builder.Services.AddSingleton<IPortForwardingService>(unifiPortForwardingService);
                     break;
             }

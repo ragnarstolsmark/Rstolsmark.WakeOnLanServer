@@ -119,7 +119,8 @@ The WakeOnLanServer supports configuring port forwarding on routers. Currently t
             "Password": "password of unifi user"
          },
          "DefaultInterface": "name of network that should be configured e.g.: wan",
-         "TimeoutSeconds": 2
+         "TimeoutSeconds": 2,
+         "WanIp": "optional WAN IP address for port forwarding"
       },
       "Backend": "Unifi"
    }
@@ -131,6 +132,8 @@ Setting AllowInvalidCertificate to true will make the WakeOnLanServer accept thi
 Otherwise the self-signed certificate will need to be installed as a trusted certificate by the machine running the WakeOnLanServer.
 
 TimeoutSeconds gives the number of seconds before the WakeOnLanServer concludes the Unifi backend must be down.
+
+WanIp is an optional configuration to specify the WAN IP address that should be used for port forwarding. If set, this IP will be sent to Unifi for correct setting of port forwarding on that IP.
 
 #### Mock setup
 
