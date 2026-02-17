@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Changed
+- Updated Azure.Extensions.AspNetCore.Configuration.Secrets from 1.3.1 to 1.4.0
+- Updated Azure.Identity from 1.12.0 to 1.17.1
+- Updated FluentValidation from 11.9.2 to 12.1.1
+- Updated Microsoft.AspNetCore.Owin from 8.0.4 to 10.0.3
+- Updated Microsoft.Identity.Web.UI from 2.18.1 to 4.3.0
+- Updated Serilog.AspNetCore from 8.0.1 to 10.0.0
+- Updated Serilog.Sinks.File from 5.0.0 to 7.0.0
+- Updated Serilog.Sinks.Seq from 8.0.0 to 9.0.0
+### Removed
+- Removed unnecessary System.Net.Ping package
+
 ## [3.0.0] - 2024-11-03
 ### Changed
 - Updated to .NET 8
