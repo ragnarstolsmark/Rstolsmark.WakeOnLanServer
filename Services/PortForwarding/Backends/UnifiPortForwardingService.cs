@@ -23,7 +23,7 @@ public class UnifiPortForwardingService : IPortForwardingService
         return portForwardSettings.Where(IsStandardPortForwarding).Select(MapUnifiPortForwardingToWakeOnLanServerPortForwarding);
     }
     // We only support port forwarding without ranges for source or destination
-    private static bool IsStandardPortForwarding(UnifiPortForwarding unifiPortForward)
+    private bool IsStandardPortForwarding(UnifiPortForwarding unifiPortForward)
     {
         if (!string.IsNullOrEmpty(unifiPortForward.Source) && unifiPortForward.Source != "any" && !IPAddress.TryParse(unifiPortForward.Source, out _))
         {
@@ -58,6 +58,10 @@ public class UnifiPortForwardingService : IPortForwardingService
             return false;
         }
         if (unifiPortForward.Protocol != "tcp_udp" && !(Enum.TryParse(unifiPortForward.Protocol?.ToUpper(), out Protocol protocol) && Enum.IsDefined(protocol)))
+        {
+            return false;
+        }
+        if (!string.IsNullOrEmpty(_wanIp) && !string.IsNullOrEmpty(unifiPortForward.DestinationIp) && unifiPortForward.DestinationIp != _wanIp)
         {
             return false;
         }
