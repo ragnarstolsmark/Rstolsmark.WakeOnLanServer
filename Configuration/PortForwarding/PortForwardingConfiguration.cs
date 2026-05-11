@@ -25,10 +25,17 @@ public static class PortForwardingConfiguration
                     {
                         throw new Exception("Unifi client needs a 'DefaultInterface' configured, to allow creation of port forwarding rules.");
                     }
-                    var unifiCache = new MemoryCache(new MemoryCacheOptions());
-                    var unifiClient = new UnifiClient.UnifiClient(unifiCache, portForwardingSettings.UnifiClientOptions);
-                    var unifiPortForwardingService = new UnifiPortForwardingService(unifiClient, portForwardingSettings.UnifiClientOptions.WanIp);
-                    builder.Services.AddSingleton<IPortForwardingService>(unifiPortForwardingService);
+                    builder.Services.AddMemoryCache();
+                    builder.Services.AddSingleton(sp => 
+                    {
+                        var cache = sp.GetRequiredService<IMemoryCache>();
+                        return new UnifiClient.UnifiClient(cache, portForwardingSettings.UnifiClientOptions);
+                    });
+                    builder.Services.AddSingleton<IPortForwardingService>(sp => 
+                    {
+                        var unifiClient = sp.GetRequiredService<UnifiClient.UnifiClient>();
+                        return new UnifiPortForwardingService(unifiClient, portForwardingSettings.UnifiClientOptions.WanIp);
+                    });
                     break;
             }
         } else
